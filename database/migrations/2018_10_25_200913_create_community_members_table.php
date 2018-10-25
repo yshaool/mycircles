@@ -19,8 +19,7 @@ class CreateCommunityMembersTable extends Migration
             $table->integer('user_id');//assigned when users accept invitation
             $table->integer('invites');//number of invitations sent
             $table->string('invite_code')->unique();//code with which user can link himself to community
-            $table->string('firstname');
-            $table->string('lastname');
+            $table->string('name');
             $table->string('phone');
             $table->string('email');
             $table->string('custom1');
