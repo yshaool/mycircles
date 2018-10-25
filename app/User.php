@@ -27,4 +27,28 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Get the CommunityMembers records associated with the User.
+     */
+    public function communityMembers()
+    {
+        return $this->hasMany('App\CommunityMember');
+    }
+
+    /**
+     * Get the specialOfferss records associated with the User.
+     */
+    public function specialOffers()
+    {
+        return $this->hasMany('App\SpecialOffer');
+    }
+
+    /**
+     * Get all of the Communities for the User.
+     */
+    public function communities()
+    {
+        return $this->hasManyThrough('App\Community', 'App\CommunityMember');
+    }
 }
