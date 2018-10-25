@@ -15,6 +15,18 @@ class CreateCommunityMembersTable extends Migration
     {
         Schema::create('community_members', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('community_id');
+            $table->integer('user_id');//assigned when users accept invitation
+            $table->integer('invites');//number of invitations sent
+            $table->string('invite_code')->unique();//code with which user can link himself to community
+            $table->string('firstname');
+            $table->string('lastname');
+            $table->string('phone');
+            $table->string('email');
+            $table->string('custom1');
+            $table->string('custom2');
+            $table->string('custom3');
+            $table->string('custom4');
             $table->timestamps();
         });
     }

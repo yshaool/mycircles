@@ -15,6 +15,11 @@ class CreateSpecialOffersTable extends Migration
     {
         Schema::create('special_offers', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id');
+            $table->integer('community_id');//what community the offer is for. 0 means to all user communities
+            $table->string('title');
+            $table->mediumText('description');
+            $table->string('image');
             $table->timestamps();
         });
     }
