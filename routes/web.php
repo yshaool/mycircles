@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', 'StaticController@index');
+Route::get('/about', 'StaticController@about');
+Route::get('/contact', 'StaticController@contact');
 
 Auth::routes();
 
