@@ -25,6 +25,7 @@
         <main class="py-4">
             @yield('content')
         </main>
+        <example-component></example-component>
     </div>
     <script src="{{ asset('js/manifest.js') }}"></script>
     <script src="{{ asset('js/vendor.js') }}"></script>
