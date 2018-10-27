@@ -10,13 +10,16 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item {{Request::is('about') ? 'active' : ''}}">
-                            <a class="nav-link" href="/about">About</a>
+                        <li class="nav-item {{Request::is('circles') ? 'active' : ''}}">
+                            <a class="nav-link" href="/circles">My Circles</a>
                         </li>
-                        <li class="nav-item {{Request::is('contact') ? 'active' : ''}}">
-                            <a class="nav-link" href="/contact">Contact</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users/{{ Auth::user()->id }}">My profile</a>
                         </li>
-                    </ul>
+                        <li class="nav-item {{Request::is('myspecialoffers') ? 'active' : ''}}">
+                            <a class="nav-link" href="/myspecialoffers">My Special Offers</a>
+                        </li>
+                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
