@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Auth;
+use App\Community;
 
 class CommunityController extends Controller
 {
@@ -44,7 +47,39 @@ class CommunityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+        'name' => 'required',
+        'image' => 'image|max:1999'
+        ]);
+
+        // Get filename with extension
+        //$filenameWithExt = $request->file('image')->getClientOriginalName();
+
+        // Get just the filename
+        //$filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+        $imagename=strtolower($request->input('name'));
+        $imagename = str_replace(" ", "-", $imagename);
+        $imagename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $imagename);
+
+        // Get extension
+        $extension = $request->file('image')->getClientOriginalExtension();
+
+        // Create new filename
+        $filenameToStore = $imagename.'_'.time().'.'.$extension;
+
+        // Uplaod image
+        $path= $request->file('image')->storeAs('circles/', $filenameToStore);
+
+        // Upload Photo
+        $community = new Community;
+        $community->user_id = Auth::id();
+        $community->name = $request->input('name');
+        $community->description = $request->input('description');
+        $community->image = $filenameToStore;
+
+        $community->save();
+        return redirect('/home')->with('success', 'Circle Created');
     }
 
     /**

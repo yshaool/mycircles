@@ -23,6 +23,7 @@
     <div id="app">
         @include('inc.navbar')
         <main class="py-4">
+            @include('inc.messages')
             @yield('content')
         </main>
         <example-component></example-component>
