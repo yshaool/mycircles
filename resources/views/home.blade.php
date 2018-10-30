@@ -12,12 +12,23 @@
                 </div>
 
                 <div class="card-body">
+                    @foreach ($user->communities as $community)
+                        {{$community->name}}
+                    @endforeach
+
+
+
+
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
                     @endif
-                    {{ asset('storage/circles/test-circle_1540856445.jpg') }}
+                    @php
+                    //print_r($user->communities);
+                    //{{ asset('storage/circles/test-circle_1540856445.jpg') }}
+                    @endphp
+
                 </div>
             </div>
         </div>

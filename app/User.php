@@ -47,8 +47,18 @@ class User extends Authenticatable
     /**
      * Get all of the Communities for the User.
      */
+
     public function communities()
     {
-        return $this->hasManyThrough('App\Community', 'App\CommunityMember');
+        return $this->hasManyThrough(
+            'App\Community',
+            'App\CommunityMember',
+            'user_id', // Foreign key on members table...
+            'id', // Foreign key on communities table...
+            'id', // Local key on users table...
+            'community_id' // Local key on community_members table...
+        );
+        //return $this->hasManyThrough('App\Community', 'App\CommunityMember');
     }
+
 }

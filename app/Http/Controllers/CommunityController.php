@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Auth;
 use App\Community;
 use App\User;
+use App\CommunityMember;
 use Image;
 use App\Jobs\InviteMembers;
 use App\Http\Traits\ExampleTrait;
@@ -34,8 +35,8 @@ class CommunityController extends Controller
         //InviteMembers::dispatch(); example of use of job
         //$this->sampleTraitFunction();
 
-        $communities= Community::where('user_id', auth()->user()->id)->get();
-        return view('home')->with('communities', $communities);
+        $user= User::find(Auth::id());
+        return view('home')->with('user', $user);
     }
 
     /**
@@ -67,14 +68,8 @@ class CommunityController extends Controller
         $cirlcename = str_replace(" ", "-", $cirlcename);
         $cirlcename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $cirlcename);
 
-        // Get extension
-        //$extension = $request->file('image')->getClientOriginalExtension();
-
         // Create new filename
         $filenameToStore = $cirlcename.'-'.time().'.jpg';
-
-        // Uplaod image
-        //$path= $request->file('image')->storeAs('public/circles/', $filenameToStore);
 
         $path   = $request->file('image');
         // returns Intervention\Image\Image
@@ -88,9 +83,22 @@ class CommunityController extends Controller
         $community->name = $request->input('name');
         $community->description = $request->input('description');
         $community->image = $filenameToStore;
-
         $community->save();
-        return redirect('/home')->with('success', 'Circle Created');
+
+        $randomInviteCode=str_random(16).time();
+        //Add the user as member of the community
+        $user= User::find(Auth::id());
+        $community_member=new CommunityMember;
+        $community_member->community_id=$community->id;
+        $community_member->user_id=$user->id;
+        $community_member->email=$user->email;
+        $community_member->name=$user->name;
+        $community_member->phone=$user->phone;
+        $community_member->invite_code=$randomInviteCode;
+        $community_member->save();
+
+        $user= User::find(Auth::id());
+        return view('/home',['success'=> 'Circle Created', 'user'=>$user]);
     }
 
     /**
