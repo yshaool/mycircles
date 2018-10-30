@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Auth;
 use App\Community;
+use Image;
 
 class CommunityController extends Controller
 {
@@ -52,24 +53,25 @@ class CommunityController extends Controller
         'image' => 'image|max:1999'
         ]);
 
-        // Get filename with extension
-        //$filenameWithExt = $request->file('image')->getClientOriginalName();
 
-        // Get just the filename
-        //$filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-
-        $imagename=strtolower($request->input('name'));
-        $imagename = str_replace(" ", "-", $imagename);
-        $imagename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $imagename);
+        $cirlcename=strtolower($request->input('name'));
+        $cirlcename = str_replace(" ", "-", $cirlcename);
+        $cirlcename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $cirlcename);
 
         // Get extension
-        $extension = $request->file('image')->getClientOriginalExtension();
+        //$extension = $request->file('image')->getClientOriginalExtension();
 
         // Create new filename
-        $filenameToStore = $imagename.'_'.time().'.'.$extension;
+        $filenameToStore = $cirlcename.'-'.time().'.jpg';
 
         // Uplaod image
-        $path= $request->file('image')->storeAs('circles/', $filenameToStore);
+        //$path= $request->file('image')->storeAs('public/circles/', $filenameToStore);
+
+        $path   = $request->file('image');
+        // returns Intervention\Image\Image
+        $img = Image::make($path)->fit(400)->encode('jpg');
+        Storage::put('public/circles/'.$filenameToStore, $img->__toString());
+
 
         // Upload Photo
         $community = new Community;

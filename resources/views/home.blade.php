@@ -17,11 +17,11 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    You are logged in!
+                    {{ asset('storage/circles/test-circle_1540856445.jpg') }}
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+
