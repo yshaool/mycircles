@@ -12,7 +12,7 @@
             <ul class="navbar-nav mr-auto">
                 @if (Auth::check())
                 <li class="nav-item">
-                    <a class="nav-link" href="/home">App Home</a>
+                    <a class="nav-link" href="/communities">App Home</a>
                 </li>
                 @endif
                 <li class="nav-item {{Request::is('about') ? 'active' : ''}}">

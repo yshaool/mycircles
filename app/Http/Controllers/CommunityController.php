@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Auth;
 use App\Community;
+use App\User;
 use Image;
 use App\Jobs\InviteMembers;//InviteMembers::dispatch();
 
@@ -28,7 +29,8 @@ class CommunityController extends Controller
      */
     public function index()
     {
-        //
+        // $communities= Community::where('user_id', auth()->user()->id)->get();
+        return view('home')->with('communities', $communities);
     }
 
     /**

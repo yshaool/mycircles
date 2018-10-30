@@ -11,7 +11,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item {{Request::is('circles') ? 'active' : ''}}">
-                            <a class="nav-link" href="/home">My Circles</a>
+                            <a class="nav-link" href="/communities">My Circles</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/users/{{ Auth::user()->id }}">My profile</a>
