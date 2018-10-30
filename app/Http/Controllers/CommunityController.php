@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Auth;
 use App\Community;
 use Image;
+use App\Jobs\InviteMembers;//InviteMembers::dispatch();
 
 class CommunityController extends Controller
 {
@@ -37,6 +38,7 @@ class CommunityController extends Controller
      */
     public function create()
     {
+
         return view('createcircle');
     }
 
