@@ -8,10 +8,12 @@ use Auth;
 use App\Community;
 use App\User;
 use Image;
-use App\Jobs\InviteMembers;//InviteMembers::dispatch();
+use App\Jobs\InviteMembers;
+use App\Http\Traits\ExampleTrait;
 
 class CommunityController extends Controller
 {
+    use ExampleTrait; //sample of using Trait
     /**
      * Instantiate a new CommunityController instance.
      *
@@ -29,7 +31,10 @@ class CommunityController extends Controller
      */
     public function index()
     {
-        // $communities= Community::where('user_id', auth()->user()->id)->get();
+        //InviteMembers::dispatch(); example of use of job
+        //$this->sampleTraitFunction();
+
+        $communities= Community::where('user_id', auth()->user()->id)->get();
         return view('home')->with('communities', $communities);
     }
 
