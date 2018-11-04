@@ -7,6 +7,15 @@
             <div class="card">
                 <div class="card-header">
                     {{$community->name}}
+                    <div class="dropdown float-right">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         Add Members
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="/addeditmemberform?cmid={{$community->id}}">Using Form</a>
+                          <a class="dropdown-item" href="#">From a File</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="container">

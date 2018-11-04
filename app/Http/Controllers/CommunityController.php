@@ -61,6 +61,30 @@ class CommunityController extends Controller
     }
 
     /**
+     * Show Add/Edit Member form and send to it community and if Edit Member
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showAddEditMemberForm(Request $request)
+    {
+        $community= Community::find($request->input('cmid'));
+        return view('addeditmember',['community'=>$community]);
+    }
+
+    /**
+     * dd/Edit Member from form
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function addMemberFromForm(Request $request)
+    {
+        return "123";
+        //$community= Community::find($request->input('cmid'));
+        //return view('addeditmember',['community'=>$community]);
+    }
+
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
