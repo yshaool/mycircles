@@ -46,8 +46,18 @@ class CommunityController extends Controller
      */
     public function create()
     {
-
         return view('createcircle');
+    }
+
+    /**
+     * Join a Circle using invitation code.
+     *
+
+     * @return \Illuminate\Http\Response
+     */
+    public function join()
+    {
+        return view('joincircle');
     }
 
     /**
@@ -109,7 +119,19 @@ class CommunityController extends Controller
      */
     public function show($id)
     {
-        //
+        $community= Community::find($id);
+        //check if user has credential to view this communty (member or owner)
+        $user= User::find(Auth::id());
+
+        if ($community->user_id==Auth::id() || $user->communities->contains($community))
+            return view('circle')->with('community',$community);
+        else
+        {
+            $community= new Community;
+            $community->name="Access denied";
+            return view('circle')->with('community',$community);
+        }
+
     }
 
     /**
@@ -134,6 +156,8 @@ class CommunityController extends Controller
     {
         //
     }
+
+
 
     /**
      * Remove the specified resource from storage.

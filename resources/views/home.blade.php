@@ -8,25 +8,34 @@
                 <div class="card-header">
                     My Circles
                     <a href="communities/create" role="button" class="btn btn-primary btn-sm float-right">Create Circle</a>
-                    <button type="button" class="btn btn-secondary btn-sm float-right mr-1">Join Circle</button>
+                    <a href="/joincircle" role="button" class="btn btn-secondary btn-sm float-right mr-1">Join A Circle</a>
                 </div>
 
                 <div class="card-body">
-                    @foreach ($user->communities as $community)
-                        {{$community->name}}
-                    @endforeach
-
-
-
-
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+                    <div class="container">
+                        <div class="row mb-4">
+                        @foreach ($user->communities as $community)
+                            @if ($loop->index!=0 && $loop->index % 3 ==0)
+                            </div><div class="row mb-4">
+                            @endif
+                            <div class="col text-center">
+                                <a href="/communities/{{$community->id}}"><img src="{{ asset('storage/circles/'.$community->image) }}" alt="{{$community->name}}" width="300px;"></a>
+                                <br>
+                                <a href="/communities/{{$community->id}}">{{$community->name}}</a>
+                            </div>
+                        @endforeach
                         </div>
-                    @endif
+                    </div>
+
+
                     @php
+                    //@if (session('status'))
+                        //<div class="alert alert-success" role="alert">
+                            //{{ session('status') }}
+                        //</div>
+                    //@endif
                     //print_r($user->communities);
-                    //{{ asset('storage/circles/test-circle_1540856445.jpg') }}
+                    //
                     @endphp
 
                 </div>

@@ -21,3 +21,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('users', 'UserController')->except(['create', 'store']);
 Route::resource('communities', 'CommunityController');
+Route::get('/joincircle', 'CommunityController@join');

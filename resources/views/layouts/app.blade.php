@@ -26,11 +26,13 @@
             @include('inc.messages')
             @yield('content')
         </main>
-        <example-component></example-component>
+
     </div>
     <script src="{{ asset('js/manifest.js') }}"></script>
     <script src="{{ asset('js/vendor.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
-
+@php
+//<example-component></example-component>
+@endphp
