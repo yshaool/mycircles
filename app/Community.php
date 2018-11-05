@@ -13,4 +13,8 @@ class Community extends Model
     {
         return $this->hasMany('App\CommunityMember');
     }
+
+    public function isUserOwner($user_id){
+        return $this->user_id==$user_id;
+    }
 }

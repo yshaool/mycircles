@@ -68,11 +68,17 @@ class CommunityController extends Controller
     public function showAddEditMemberForm(Request $request)
     {
         $community= Community::find($request->input('cmid'));
-        return view('addeditmember',['community'=>$community]);
+        $communityMember= CommunityMember::find($request->input('cmmid'));
+        // Verify that user owns the community before allowing it to Add/edit member
+        if (!$community->isUserOwner(Auth::id()))
+        {
+            return redirect('/communities');
+        }
+        return view('addeditmember',['community'=>$community,'communityMember'=>$communityMember]);
     }
 
     /**
-     * dd/Edit Member from form
+     * Add/Edit Member from form
      *
      * @return \Illuminate\Http\Response
      */
@@ -82,6 +88,12 @@ class CommunityController extends Controller
             'name' => 'required',
             'email' => 'required|email'
         ]);
+        // Verify that user owns the community before allowing it to Add/edit member
+        $community=Community::find($request->input('community_id'));
+        if (!$community->isUserOwner(Auth::id()))
+        {
+            return redirect('/communities');
+        }
         $successMessage="Member Added Successfully!";
         if ($request->input('community_member_id')==0) //add new
         {
@@ -216,4 +228,6 @@ class CommunityController extends Controller
     {
         //
     }
+
+
 }

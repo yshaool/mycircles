@@ -38,6 +38,7 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">email</th>
                                 <th scope="col">Phone</th>
+                                <th scope="col"></th>
                                 </tr>
                             </thead>
                                 <tbody>
@@ -46,6 +47,10 @@
                                         <td>{{$member->name}}</td>
                                         <td>{{$member->email}}</td>
                                         <td>{{$member->phone}}</td>
+                                        <td>
+                                            <a href="/addeditmemberform?cmid={{$community->id}}&cmmid={{$member->id}}"><img src="/svg/si-glyph-edit.svg"/></a>
+                                            <a href="/addeditmemberform?cmid={{$community->id}}&cmmid={{$member->id}}"><img src="/svg/si-glyph--button-remove.svg"/></a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
