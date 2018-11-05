@@ -6,12 +6,12 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    Add Members to {{$community->name}}
+                    {{$actionTitle}} Members to {{$community->name}}
                     <a href="/communities/{{$community->id}}" role="button" class="btn btn-secondary btn-sm float-right">back</a>
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ action('CommunityController@addMemberFromForm') }}" method="post" accept-charset="utf-8">
+                    <form action="{{ action('CommunityMemberController@store') }}" method="post" accept-charset="utf-8">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label for="name" class="col-form-label">Member Name</label>
@@ -27,7 +27,7 @@
                         </div>
                         <input type="hidden" name="community_member_id" value="{{$communityMember->id ?? $communityMember->id ?? 0 }}">
                         <input type="hidden" name="community_id" value="{{$community->id}}">
-                        <input type="submit" value="Add Member" class="btn btn-primary" />
+                        <input type="submit" value="{{$actionTitle}} Member" class="btn btn-primary" />
 
                     </form>
                 </div>

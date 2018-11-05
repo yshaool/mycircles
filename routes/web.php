@@ -21,10 +21,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('users', 'UserController')->except(['create', 'store']);
 Route::resource('communities', 'CommunityController');
-Route::resource('communitymember', 'CommunitymemberController');
+Route::resource('communitymember', 'CommunityMemberController');
 Route::get('/joincircle', 'CommunityController@join');
-Route::get('/addeditmemberform', 'CommunityController@showAddEditMemberForm');
-Route::post('/addMemberFromForm', 'CommunityController@addMemberFromForm');
+
 
 /*
 POST      | communitymember                        | communitymember.store   | App\Http\Controllers\CommunitymemberController@store                   | web          |

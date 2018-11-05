@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -60,63 +59,6 @@ class CommunityController extends Controller
         return view('joincircle');
     }
 
-    /**
-     * Show Add/Edit Member form and send to it community and if Edit Member
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showAddEditMemberForm(Request $request)
-    {
-        $community= Community::find($request->input('cmid'));
-        $communityMember= CommunityMember::find($request->input('cmmid'));
-        // Verify that user owns the community before allowing it to Add/edit member
-        if (!$community->isUserOwner(Auth::id()))
-        {
-            return redirect('/communities');
-        }
-        return view('addeditmember',['community'=>$community,'communityMember'=>$communityMember]);
-    }
-
-    /**
-     * Add/Edit Member from form
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function addMemberFromForm(Request $request)
-    {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email'
-        ]);
-        // Verify that user owns the community before allowing it to Add/edit member
-        $community=Community::find($request->input('community_id'));
-        if (!$community->isUserOwner(Auth::id()))
-        {
-            return redirect('/communities');
-        }
-        $successMessage="Member Added Successfully!";
-        if ($request->input('community_member_id')==0) //add new
-        {
-            $randomInviteCode=str_random(16).time();
-            $community_member=new CommunityMember;
-            $community_member->community_id=$request->input('community_id');
-            $community_member->email=$request->input('email');
-            $community_member->name=$request->input('name');
-            $community_member->phone=$request->input('phone');
-            $community_member->invite_code=$randomInviteCode;
-            $community_member->save();
-        }
-        else //update exisiting
-        {
-            $community_member= CommunityMember::find($request->input('community_member_id'));
-            $community_member->email=$request->input('email');
-            $community_member->name=$request->input('name');
-            $community_member->phone=$request->input('phone');
-            $community_member->save();
-            $successMessage="Member Updated Successfully!";
-        }
-        return redirect('/communities/'.$request->input('community_id'))->with('success',$successMessage);
-    }
 
 
     /**

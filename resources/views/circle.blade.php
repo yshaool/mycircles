@@ -12,7 +12,7 @@
                          Add Members
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" href="/addeditmemberform?cmid={{$community->id}}">Using Form</a>
+                          <a class="dropdown-item" href="/communitymember/create?cmid={{$community->id}}">Using Form</a>
                           <a class="dropdown-item" href="#">From a File</a>
                         </div>
                     </div>
@@ -48,8 +48,8 @@
                                         <td>{{$member->email}}</td>
                                         <td>{{$member->phone}}</td>
                                         <td>
-                                            <a href="/addeditmemberform?cmid={{$community->id}}&cmmid={{$member->id}}"><img src="/svg/si-glyph-edit.svg"/></a>
-                                            <a href="/addeditmemberform?cmid={{$community->id}}&cmmid={{$member->id}}"><img src="/svg/si-glyph--button-remove.svg"/></a>
+                                            <a href="/communitymember/{{$member->id}}/edit?cmid={{$community->id}}"><img src="/svg/si-glyph-edit.svg"/></a>
+                                            <a href="/addeditmemberform?cmid={{$community->id}}&cmmid={{$member->id}}"><img src="/svg/si-glyph-button-remove.svg"/></a>
                                         </td>
                                     </tr>
                                 @endforeach
