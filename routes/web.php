@@ -21,7 +21,17 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('users', 'UserController')->except(['create', 'store']);
 Route::resource('communities', 'CommunityController');
+Route::resource('communitymember', 'CommunitymemberController');
 Route::get('/joincircle', 'CommunityController@join');
 Route::get('/addeditmemberform', 'CommunityController@showAddEditMemberForm');
 Route::post('/addMemberFromForm', 'CommunityController@addMemberFromForm');
 
+/*
+POST      | communitymember                        | communitymember.store   | App\Http\Controllers\CommunitymemberController@store                   | web          |
+|        | GET|HEAD  | communitymember                        | communitymember.index   | App\Http\Controllers\CommunitymemberController@index                   | web          |
+|        | GET|HEAD  | communitymember/create                 | communitymember.create  | App\Http\Controllers\CommunitymemberController@create                  | web          |
+|        | DELETE    | communitymember/{communitymember}      | communitymember.destroy | App\Http\Controllers\CommunitymemberController@destroy                 | web          |
+|        | PUT|PATCH | communitymember/{communitymember}      | communitymember.update  | App\Http\Controllers\CommunitymemberController@update                  | web          |
+|        | GET|HEAD  | communitymember/{communitymember}      | communitymember.show    | App\Http\Controllers\CommunitymemberController@show                    | web          |
+|        | GET|HEAD  | communitymember/{communitymember}/edit | communitymember.edit    | App\Http\Controllers\CommunitymemberController@edit                    | web          |
+*/
