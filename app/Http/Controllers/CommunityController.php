@@ -78,9 +78,32 @@ class CommunityController extends Controller
      */
     public function addMemberFromForm(Request $request)
     {
-        return "123";
-        //$community= Community::find($request->input('cmid'));
-        //return view('addeditmember',['community'=>$community]);
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email'
+        ]);
+        $successMessage="Member Added Successfully!";
+        if ($request->input('community_member_id')==0) //add new
+        {
+            $randomInviteCode=str_random(16).time();
+            $community_member=new CommunityMember;
+            $community_member->community_id=$request->input('community_id');
+            $community_member->email=$request->input('email');
+            $community_member->name=$request->input('name');
+            $community_member->phone=$request->input('phone');
+            $community_member->invite_code=$randomInviteCode;
+            $community_member->save();
+        }
+        else //update exisiting
+        {
+            $community_member= CommunityMember::find($request->input('community_member_id'));
+            $community_member->email=$request->input('email');
+            $community_member->name=$request->input('name');
+            $community_member->phone=$request->input('phone');
+            $community_member->save();
+            $successMessage="Member Updated Successfully!";
+        }
+        return redirect('/communities/'.$request->input('community_id'))->with('success',$successMessage);
     }
 
 
