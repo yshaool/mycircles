@@ -164,12 +164,31 @@ class CommunityController extends Controller
         if ($community->user_id!=Auth::id())
              redirect('/communities')->with('error','You do not have access to update this Circle.');
 
+        $this->validate($request, [
+        'name' => 'required'
+        ]);
+
+        if ($request->file('image'))
+        {
+            $cirlcename=strtolower($request->input('name'));
+            $cirlcename = str_replace(" ", "-", $cirlcename);
+            $cirlcename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $cirlcename);
+
+            $filenameToStore = $cirlcename.'-'.time().'.jpg';
+
+            $path   = $request->file('image');
+
+            $img = Image::make($path)->fit(400)->encode('jpg');
+            Storage::put('public/circles/'.$filenameToStore, $img->__toString());
+            Storage::delete('public/circles/'.$community->image);
+            $community->image=$filenameToStore;
+        }
+
         $community->name = $request->input('name');
         $community->description = $request->input('description');
-        //$community->image = $filenameToStore;
         $community->save();
 
-        return view('circle')->with('community',$community);
+        return redirect('/communities/'.$community->id)->with('success','Circle Updated');
     }
 
 

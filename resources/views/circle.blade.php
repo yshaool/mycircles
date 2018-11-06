@@ -8,7 +8,7 @@
                 <div class="card-header">
                     {{$community->name}}
                     <div class="dropdown float-right">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                          Add Members
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -16,7 +16,7 @@
                           <a class="dropdown-item" href="#">From a File</a>
                         </div>
                     </div>
-                    <a href="/communities/{{$community->id}}/edit" role="button" class="btn btn-secondary float-right mr-1">Edit Circle</a>
+                    <a href="/communities/{{$community->id}}/edit" role="button" class="btn btn-secondary btn-sm float-right mr-1">Edit Circle</a>
                 </div>
                 <div class="card-body">
                     <div class="container">
