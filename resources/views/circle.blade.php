@@ -16,13 +16,16 @@
                           <a class="dropdown-item" href="#">From a File</a>
                         </div>
                     </div>
+                    <a href="/communities/{{$community->id}}/edit" role="button" class="btn btn-secondary float-right mr-1">Edit Circle</a>
                 </div>
                 <div class="card-body">
                     <div class="container">
                         <div class="row">
+                            @if ($community->image!="")
                             <div class="col-sm">
                                     <img src="{{ asset('storage/circles/'.$community->image) }}" alt="{{$community->name}}">
                             </div>
+                            @endif
                             <div class="col-sm">
                                     {{$community->description}}
                             </div>

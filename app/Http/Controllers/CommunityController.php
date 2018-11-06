@@ -11,6 +11,7 @@ use Image;
 use App\Jobs\InviteMembers;
 use App\Http\Traits\ExampleTrait;
 
+
 class CommunityController extends Controller
 {
     use ExampleTrait; //sample of using Trait
@@ -121,17 +122,13 @@ class CommunityController extends Controller
     public function show($id)
     {
         $community= Community::find($id);
-        //check if user has credential to view this communty (member or owner)
         $user= User::find(Auth::id());
 
-        if ($community->user_id==Auth::id() || $user->communities->contains($community))
-            return view('circle')->with('community',$community);
-        else
-        {
-            $community= new Community;
-            $community->name="Access denied";
-            return view('circle')->with('community',$community);
-        }
+        //check if user has credential to view this communty (member or owner)
+        if ($community->user_id!=Auth::id() && !$user->communities->contains($community))
+            return redirect('/communities')->with('error','You do not have access to view this Circle.');
+
+        return view('circle')->with('community',$community);
 
     }
 
@@ -143,7 +140,13 @@ class CommunityController extends Controller
      */
     public function edit($id)
     {
-        //
+        $community= Community::find($id);
+
+        //check if user has credential to view this communty (member or owner)
+        if ($community->user_id!=Auth::id())
+            return redirect('/communities')->with('error','You do not have access to edit this Circle.');
+
+        return view('editcircle')->with('community',$community);
     }
 
     /**
@@ -155,7 +158,18 @@ class CommunityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $community= Community::find($id);
+
+        //make sure user is authorised for this community
+        if ($community->user_id!=Auth::id())
+             redirect('/communities')->with('error','You do not have access to update this Circle.');
+
+        $community->name = $request->input('name');
+        $community->description = $request->input('description');
+        //$community->image = $filenameToStore;
+        $community->save();
+
+        return view('circle')->with('community',$community);
     }
 
 
