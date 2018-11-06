@@ -48,13 +48,22 @@
                                         <td>{{$member->email}}</td>
                                         <td>{{$member->phone}}</td>
                                         <td>
-                                            <a href="/communitymember/{{$member->id}}/edit?cmid={{$community->id}}"><img src="/svg/si-glyph-edit.svg"/></a>
-                                            <a href="/addeditmemberform?cmid={{$community->id}}&cmmid={{$member->id}}"><img src="/svg/si-glyph-button-remove.svg"/></a>
+                                            <div class="row">
+                                                <div class="col-sm">
+                                                    <a href="/communitymember/{{$member->id}}/edit?cmid={{$community->id}}"><img src="/svg/si-glyph-edit.svg" alt="Edit" title="Edit" /></a>                                                        </div>
+                                                <div class="col-sm">
+                                                        <a href="#" ><img src="/svg/si-glyph-button-remove.svg" id="deleteMember" alt="Delete" title="Delete" data-member-id="{{$member->id}}" /></a>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                        <form action="" method="post" id="deleteMemberForm" accept-charset="utf-8">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="_method" value="DELETE">
+                        </form>
                     </div>
                 </div>
             </div>
