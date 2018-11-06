@@ -125,8 +125,16 @@ class CommunityMemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        //
+        $community= Community::find($request->input('cmid'));
+        $communityMember= CommunityMember::find($id);
+        // Verify that user owns the community before allowing it to Add/edit member
+        if (!$community->isUserOwner(Auth::id()) || $communityMember->community->id!=$request->input('cmid'))
+        {
+            return redirect('/communities');
+        }
+        $communityMember->delete();
+        return redirect('/communities/'.$request->input('cmid'))->with('success','Member deleted successfully!');
     }
 }

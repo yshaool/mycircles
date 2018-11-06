@@ -1677,9 +1677,10 @@ module.exports = function spread(callback) {
 /***/ (function(module, exports) {
 
 $('body').on('click', '#deleteMember', function () {
-
     if (confirm("Are you sure you want to delete this member?")) {
-        alert($(this).attr("data-member-id"));
+        //alert($(this).attr("data-member-id"));
+        $("#deleteMemberForm").attr("action", "/communitymember/" + $(this).attr("data-member-id"));
+        $("#deleteMemberForm").submit();
     }
 });
 

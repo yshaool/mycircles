@@ -63,6 +63,7 @@
                         <form action="" method="post" id="deleteMemberForm" accept-charset="utf-8">
                             {{ csrf_field() }}
                             <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="cmid" value="{{$community->id}}">
                         </form>
                     </div>
                 </div>
