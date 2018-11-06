@@ -204,5 +204,15 @@ class CommunityController extends Controller
         //
     }
 
+    public function invite($id)
+    {
+        $community= Community::find($id);
+
+        //check if user has credential to invite members from this communty (member or owner)
+        if ($community->user_id!=Auth::id())
+            return redirect('/communities')->with('error','You do not have access to edit this Circle.');
+
+        return view('invite-members')->with('community',$community);
+    }
 
 }
