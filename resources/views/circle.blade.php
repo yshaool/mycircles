@@ -7,6 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     {{$community->name}}
+                    @if ($community->user_id==Auth::id())
                     <div class="dropdown float-right">
                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                          Add Members
@@ -18,6 +19,7 @@
                     </div>
                     <a href="/communities/{{$community->id}}/edit" role="button" class="btn btn-secondary btn-sm float-right mr-1">Edit Circle</a>
                     <a href="/communities/{{$community->id}}/invite" role="button" class="btn btn-secondary btn-sm float-right mr-1">Invite members</a>
+                    @endif
                 </div>
                 <div class="card-body">
                     <div class="container">
@@ -42,7 +44,9 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">email</th>
                                 <th scope="col">Phone</th>
-                                <th scope="col"></th>
+                                @if ($community->user_id==Auth::id())
+                                    <th scope="col"></th>
+                                @endif
                                 </tr>
                             </thead>
                                 <tbody>
@@ -51,15 +55,17 @@
                                         <td>{{$member->name}}</td>
                                         <td>{{$member->email}}</td>
                                         <td>{{$member->phone}}</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <a href="/communitymember/{{$member->id}}/edit?cmid={{$community->id}}"><img src="/svg/si-glyph-edit.svg" alt="Edit" title="Edit" /></a>                                                        </div>
-                                                <div class="col-sm">
-                                                        <a href="#" ><img src="/svg/si-glyph-button-remove.svg" id="deleteMember" alt="Delete" title="Delete" data-member-id="{{$member->id}}" /></a>
+                                        @if ($community->user_id==Auth::id())
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <a href="/communitymember/{{$member->id}}/edit?cmid={{$community->id}}"><img src="/svg/si-glyph-edit.svg" alt="Edit" title="Edit" /></a>                                                        </div>
+                                                    <div class="col-sm">
+                                                            <a href="#" ><img src="/svg/si-glyph-button-remove.svg" id="deleteMember" alt="Delete" title="Delete" data-member-id="{{$member->id}}" /></a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

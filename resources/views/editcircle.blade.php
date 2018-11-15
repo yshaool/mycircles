@@ -7,6 +7,7 @@
             <div class="card">
                 <div class="card-header">
                    Edit Circle - {{$community->name}}
+                   <a href="/communities/{{$community->id}}" role="button" class="btn btn-secondary btn-sm float-right">back</a>
                 </div>
                 <div class="card-body">
                     <form action="{{ action('CommunityController@update', ['id' => $community->id]) }}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
