@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <div class="container mt-4">
                         <h4>Choose Members to Invite:</h4>
-                        <div class="container mb-3"><a href="#">Check All</a> | <a href="#">Check None</a></div>
+                        <div class="container mb-3"><a href="#"><span id="checkall">Check All</span></a></div>
                         <div class="container">
                             <div class="row">
                             @foreach ($community->communityMembers as $member)
@@ -20,7 +20,7 @@
                                 @endif
                                     <div class="col-sm">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                            <input class="form-check-input" type="checkbox" value="{{$member->id}}" id="memeberstoinvite[]">
                                             <label class="form-check-label" for="defaultCheck1">{{$member->name}}</label>
                                         </div>
                                     </div>

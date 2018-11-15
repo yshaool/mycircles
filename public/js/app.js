@@ -1684,6 +1684,21 @@ $('body').on('click', '#deleteMember', function () {
     }
 });
 
+$(document).ready(function () {
+
+    $("#checkall").click(function () {
+        event.preventDefault();
+
+        if ($("input[type='checkbox']").prop("checked")) {
+            $(':checkbox').prop('checked', false);
+            $(this).text('Check all');
+        } else {
+            $(':checkbox').prop('checked', true);
+            $(this).text('Uncheck all');
+        }
+    });
+});
+
 /***/ }),
 /* 38 */,
 /* 39 */,
