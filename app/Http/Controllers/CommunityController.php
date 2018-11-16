@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 use Auth;
 use App\Community;
 use App\User;
@@ -10,6 +11,7 @@ use App\CommunityMember;
 use Image;
 use App\Jobs\InviteMembers;
 use App\Http\Traits\ExampleTrait;
+use App\Mail\MemberInvite;
 
 
 class CommunityController extends Controller
@@ -204,7 +206,7 @@ class CommunityController extends Controller
         //
     }
 
-    public function invite($id)
+    public function showInvite($id)
     {
         $community= Community::find($id);
 
@@ -214,5 +216,23 @@ class CommunityController extends Controller
 
         return view('invite-members')->with('community',$community);
     }
+
+    public function inviteMembers(Request $request,$id)
+    {
+        $community= Community::find($id);
+
+        $selectedMembers=$request->input('memeberstoinvite');
+        if (!isset($selectedMembers))
+            return redirect('/communities/'.$id.'/showinvite')->with('error','No members selected.');
+
+        foreach ($selectedMembers as $memberId) {
+            $community_member=CommunityMember::find($memberId);
+            Mail::to($community_member->email)->send(new MemberInvite($community,$community_member));
+        }
+
+        //Mail::to("yshaool@gmail.com")->send(new MemberInvite($community,$community_member));
+        return redirect('/communities/'.$community->id)->with('success','Invitation Emails Sent');
+    }
+
 
 }

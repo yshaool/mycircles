@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use Auth;
 use App\Community;
 use App\User;
 use App\CommunityMember;
+
+
 class CommunityMemberController extends Controller
 {
     /**
@@ -118,6 +121,7 @@ class CommunityMemberController extends Controller
     {
         //
     }
+
 
     /**
      * Remove the specified resource from storage.

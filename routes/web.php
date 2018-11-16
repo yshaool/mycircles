@@ -23,7 +23,9 @@ Route::resource('users', 'UserController')->except(['create', 'store']);
 Route::resource('communities', 'CommunityController');
 Route::resource('communitymember', 'CommunityMemberController');
 Route::get('/joincircle', 'CommunityController@join');
-Route::get('/communities/{community}/invite', 'CommunityController@invite');
+Route::get('/communities/{community}/showinvite', 'CommunityController@showInvite');
+Route::POST('/communities/{community}/sendinvite', 'CommunityController@inviteMembers');
+
 
 
 /*
