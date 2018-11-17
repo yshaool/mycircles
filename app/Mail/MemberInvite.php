@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use App\Community;
 use App\CommunityMember;
+use App\User;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -16,16 +17,18 @@ class MemberInvite extends Mailable
 
     public $community;
     public $communityMember;
+    public $communityOwner;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Community $community, CommunityMember $communityMember)
+    public function __construct(Community $community, CommunityMember $communityMember,User $communityOwner)
     {
         $this->community=$community;
         $this->communityMember=$communityMember;
+        $this->communityOwner=$communityOwner;
     }
 
     /**
@@ -35,6 +38,6 @@ class MemberInvite extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.memberinvite')->text('emails.text.memberinvite');;
+        return $this->view('emails.memberinvite')->text('emails.text.memberinvite')->subject('Invitation to join community - '.$this->community->name);
     }
 }

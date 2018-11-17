@@ -220,6 +220,10 @@ class CommunityController extends Controller
     public function inviteMembers(Request $request,$id)
     {
         $community= Community::find($id);
+        $userOwner= User::find(Auth::id());
+
+        if ($community->user_id!=Auth::id())
+            return redirect('/communities/'.$id.'/showinvite')->with('error','You do not have access to edit this Circle.');
 
         $selectedMembers=$request->input('memeberstoinvite');
         if (!isset($selectedMembers))
@@ -227,7 +231,7 @@ class CommunityController extends Controller
 
         foreach ($selectedMembers as $memberId) {
             $community_member=CommunityMember::find($memberId);
-            Mail::to($community_member->email)->send(new MemberInvite($community,$community_member));
+            Mail::to($community_member->email)->send(new MemberInvite($community,$community_member,$userOwner));
         }
 
         //Mail::to("yshaool@gmail.com")->send(new MemberInvite($community,$community_member));
