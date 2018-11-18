@@ -14,6 +14,7 @@
                 <div class="card-body">
                     <div class="container">
                         <div class="row mb-4">
+                        @if (isset($user->communities))
                         @foreach ($user->communities as $community)
                             @if ($loop->index!=0 && $loop->index % 3 ==0)
                             </div><div class="row mb-4">
@@ -24,19 +25,9 @@
                                 <a href="/communities/{{$community->id}}">{{$community->name}}</a>
                             </div>
                         @endforeach
+                        @endif
                         </div>
                     </div>
-
-
-                    @php
-                    //@if (session('status'))
-                        //<div class="alert alert-success" role="alert">
-                            //{{ session('status') }}
-                        //</div>
-                    //@endif
-                    //print_r($user->communities);
-                    //
-                    @endphp
 
                 </div>
             </div>

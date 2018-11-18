@@ -57,9 +57,28 @@ class CommunityController extends Controller
 
      * @return \Illuminate\Http\Response
      */
-    public function join()
+    public function showjoin()
     {
         return view('joincircle');
+    }
+
+    /**
+     * Join a Circle using invitation code.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function join(Request $request)
+    {
+        $this->validate($request, [
+            'invite_code' => 'required'
+            ]);
+
+        $user= User::find(Auth::id());
+        $community_member=CommunityMember::where('invite_code', $request->input('invite_code'))->first();
+        $community_member->user_id=$user->id;
+        $community_member->save();
+        return redirect('/communities')->with('success','You joined a circle!');
     }
 
 

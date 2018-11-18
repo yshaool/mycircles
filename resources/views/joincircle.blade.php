@@ -10,7 +10,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ action('CommunityController@store') }}" method="post" accept-charset="utf-8">
+                    <form action="{{ action('CommunityController@join') }}" method="post" accept-charset="utf-8">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label for="invite_code" class="col-form-label">Invitation Code</label>
