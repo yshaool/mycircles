@@ -56,6 +56,25 @@ class CommunityController extends Controller
         return view('home')->with('user', $user);
     }
 
+
+    /**
+     * Show the form for members from file.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showAddMembersFromFileForm($id)
+    {
+        $community= Community::find($id);
+        $user= User::find(Auth::id());
+
+        //check if user has credential to view this communty (member or owner)
+        if ($community->user_id!=Auth::id())
+            return redirect('/communities')->with('error','You do not have access to Add member to this Circle.');
+
+
+        return view('addmembersfromfile')->with('community',$community);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

@@ -14,7 +14,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                           <a class="dropdown-item" href="/communitymember/create?cmid={{$community->id}}">Using Form</a>
-                          <a class="dropdown-item" href="#">From a File</a>
+                          <a class="dropdown-item" href="/communities/{{$community->id}}/addmembersfromfile">From a File</a>
                         </div>
                     </div>
                     <a href="/communities/{{$community->id}}/edit" role="button" class="btn btn-secondary btn-sm float-right mr-1">Edit Circle</a>
