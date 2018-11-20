@@ -79,6 +79,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>
+                                <span class="float-right">Have an Account? <a class="btn btn-link" href="/login">Log In</a></span>
                             </div>
                         </div>
                     </form>

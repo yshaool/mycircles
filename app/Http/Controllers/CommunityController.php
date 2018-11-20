@@ -24,7 +24,7 @@ class CommunityController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['joinFromEmailLink']);
     }
 
     /**
@@ -36,8 +36,23 @@ class CommunityController extends Controller
     {
         //InviteMembers::dispatch(); example of use of job
         //$this->sampleTraitFunction();
-
+        //<input type="hidden" name="invite_code" value="{{ old('invite_code') }}">
         $user= User::find(Auth::id());
+
+        if (session()->has('invite_code')) {
+            session()->forget('invite_code');
+            $community_member=CommunityMember::where('invite_code',  session()->has('invite_code'))->first();
+            if ($community_member)
+            {
+                $community_member->user_id=$user->id;
+                $community_member->save();
+                return redirect('/communities')->with('success','You joined a circle!');
+            }
+            else
+            {
+                return redirect('/communities')->with('error','Code is incorrect! Please verify you copy with no spaces.');
+            }
+        }
         return view('home')->with('user', $user);
     }
 
@@ -76,9 +91,76 @@ class CommunityController extends Controller
 
         $user= User::find(Auth::id());
         $community_member=CommunityMember::where('invite_code', $request->input('invite_code'))->first();
-        $community_member->user_id=$user->id;
-        $community_member->save();
-        return redirect('/communities')->with('success','You joined a circle!');
+        if ($community_member)
+        {
+            $community_member->user_id=$user->id;
+            $community_member->save();
+            return redirect('/communities')->with('success','You joined a circle!');
+        }
+        else
+        {
+            return redirect('/communities')->with('error','Code is incorrect! Please verify you copy with no spaces.');
+        }
+
+    }
+
+    /**
+     * joinFromEmailLink - join a Circle using invitation code directlty from email link.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function joinFromEmailLink(Request $request)
+    {
+        //code is missing
+        if ($request->input('code')===null)
+            return redirect('/');
+
+
+
+        //user logged in connect user to comme
+        if (Auth::check()) {
+            $user= User::find(Auth::id());
+            $community_member=CommunityMember::where('invite_code', $request->input('code'))->first();
+            if ($community_member)
+            {
+                $community_member->user_id=$user->id;
+                $community_member->save();
+                return redirect('/communities')->with('success','You joined a circle!');
+            }
+            else
+            {
+                return redirect('/communities')->with('error','The code you supplyis incorrect - please try again.');
+            }
+        } //user not logged in
+        else{
+            $community_member=CommunityMember::where('invite_code', $request->input('code'))->first();
+            if ($community_member) // we found the community member using code
+            {
+
+                $user= User::where('email', $community_member->email)->first();
+                if ($user)// user with that email already exists - set email and redirect to login
+                {
+                    //connect the user id
+                    $community_member->user_id=$user->id;
+                    $community_member->save();
+
+                    //redirect to login
+                    $request->merge(['email'=>$user->email]);
+                    $request->flash();
+                    return redirect('login');
+                }
+
+                //set the code in session
+                $request->session()->put('invite_code', $request->input('code'));
+
+                //user not exist - set data from community member in session and redirect to register
+                $request->merge(['email'=>$community_member->email, 'name'=>$community_member->name, 'phone'=>$community_member->phone ]);
+                $request->flash();
+                return redirect('register');
+            }
+            return redirect('/');
+        }
     }
 
 

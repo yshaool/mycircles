@@ -26,7 +26,7 @@ Route::get('/joincircle', 'CommunityController@showjoin');
 Route::POST('/join', 'CommunityController@join');
 Route::get('/communities/{community}/showinvite', 'CommunityController@showInvite');
 Route::POST('/communities/{community}/sendinvite', 'CommunityController@inviteMembers');
-//Route::POST('/communities/{community}/join', 'CommunityController@joinFromEmailLink');
+Route::get('/joinfromemail', 'CommunityController@joinFromEmailLink');
 
 
 /*
