@@ -19,6 +19,7 @@
                     </div>
                     <a href="/communities/{{$community->id}}/edit" role="button" class="btn btn-secondary btn-sm float-right mr-1">Edit Circle</a>
                     <a href="/communities/{{$community->id}}/showinvite" role="button" class="btn btn-secondary btn-sm float-right mr-1">Invite members</a>
+                    <a href="/communities/{{$community->id}}/downloadmembers" role="button" class="btn btn-secondary btn-sm float-right mr-1">Download members</a>
                     @endif
                 </div>
                 <div class="card-body">

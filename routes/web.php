@@ -27,8 +27,13 @@ Route::POST('/join', 'CommunityController@join');
 Route::get('/communities/{community}/showinvite', 'CommunityController@showInvite');
 Route::POST('/communities/{community}/sendinvite', 'CommunityController@inviteMembers');
 Route::get('/joinfromemail', 'CommunityController@joinFromEmailLink');
+Route::get('/communities/{community}/downloadmembers', 'CommunityController@downloadMembers');
+
 Route::get('/communities/{community}/addmembersfromfile', 'CommunityController@showAddMembersFromFileForm');
+Route::POST('/communities/{community}/addmembersfromfile', 'CommunityController@parseMembersFileDisplayColSelection');
+
 
 
 //https://itsolutionstuff.com/post/laravel-56-import-export-to-excel-and-csv-exampleexample.html
+//laravel excel export https://www.youtube.com/watch?v=2FH72e6OjeQ
 

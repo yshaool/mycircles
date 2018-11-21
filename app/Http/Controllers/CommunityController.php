@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
@@ -12,7 +14,8 @@ use Image;
 use App\Jobs\InviteMembers;
 use App\Http\Traits\ExampleTrait;
 use App\Mail\MemberInvite;
-
+use App\Exports\CommunityMemberExport;
+use App\Imports\CommunityMemberImport;
 
 class CommunityController extends Controller
 {
@@ -56,6 +59,23 @@ class CommunityController extends Controller
         return view('home')->with('user', $user);
     }
 
+    /**
+     * downloadMembers
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function downloadMembers($id)
+    {
+        $community= Community::find($id);
+        $user= User::find(Auth::id());
+
+        //check if user has credential to view this communty (member or owner)
+        if ($community->user_id!=Auth::id())
+            return redirect('/communities')->with('error','You do not have access to download members of this Circle.');
+
+        //return Excel::download(new CommunityMemberExport, 'CommunityMembers.xlsx');
+        return (new CommunityMemberExport($id))->download('CommunityMembers.xlsx');
+    }
 
     /**
      * Show the form for members from file.
@@ -72,8 +92,36 @@ class CommunityController extends Controller
             return redirect('/communities')->with('error','You do not have access to Add member to this Circle.');
 
 
-        return view('addmembersfromfile')->with('community',$community);
+        return view('uploadmembersfile')->with('community',$community);
     }
+
+    /**
+     * Show the form for members from file.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function parseMembersFileDisplayColSelection(Request $request, $id)
+    {
+        $this->validate($request, [
+            'members-file' => 'required|file'
+            ]);
+
+        $community= Community::find($id);
+        $user= User::find(Auth::id());
+
+        //check if user has credential to view this communty (member or owner)
+        if ($community->user_id!=Auth::id())
+            return redirect('/communities')->with('error','You do not have access to Add members to this Circle.');
+
+
+        $membersArray=Excel::toArray(new CommunityMemberImport, request()->file('members-file'));
+
+        $CommunityMemberFieldlist=array('name','phone','email','custom1','custom2','custom3','custom4');
+        return view('parsemembersfile',['membersArray'=>$membersArray,'community'=>$community]);
+    }
+
+
+
 
     /**
      * Show the form for creating a new resource.
