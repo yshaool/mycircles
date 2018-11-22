@@ -12,14 +12,14 @@ use App\User;
 use App\CommunityMember;
 use Image;
 use App\Jobs\InviteMembers;
-use App\Http\Traits\ExampleTrait;
+use App\Http\Traits\DbFieldGuesserTrait;
 use App\Mail\MemberInvite;
 use App\Exports\CommunityMemberExport;
 use App\Imports\CommunityMemberImport;
 
 class CommunityController extends Controller
 {
-    use ExampleTrait; //sample of using Trait
+    use DbFieldGuesserTrait; //sample of using Trait
     /**
      * Instantiate a new CommunityController instance.
      *
@@ -38,7 +38,7 @@ class CommunityController extends Controller
     public function index()
     {
         //InviteMembers::dispatch(); example of use of job
-        //$this->sampleTraitFunction();
+
         //<input type="hidden" name="invite_code" value="{{ old('invite_code') }}">
         $user= User::find(Auth::id());
 
@@ -116,7 +116,26 @@ class CommunityController extends Controller
 
         $membersArray=Excel::toArray(new CommunityMemberImport, request()->file('members-file'));
 
-        $CommunityMemberFieldlist=array('name','phone','email','custom1','custom2','custom3','custom4');
+
+        //json_encode($membersArray[0],JSON_PRETTY_PRINT);
+
+        $CommunityMemberFieldlist=array();
+        array_push($CommunityMemberFieldlist, ['dbColName'=>'name','rule'=>'none','possibleColNames'=>['name']]);
+        array_push($CommunityMemberFieldlist, ['dbColName'=>'f_name','rule'=>'none','possibleColNames'=>['first name','f_name','f name']]);
+        array_push($CommunityMemberFieldlist, ['dbColName'=>'l_name','rule'=>'none','possibleColNames'=>['last name','l_name','l name']]);
+        array_push($CommunityMemberFieldlist, ['dbColName'=>'phone','rule'=>'isPhone','possibleColNames'=>['phone','cellphone','home phone','work phone']]);
+        array_push($CommunityMemberFieldlist, ['dbColName'=>'email','rule'=>'isEmail','possibleColNames'=>['email','email address']]);
+        array_push($CommunityMemberFieldlist, ['dbColName'=>'custom1','rule'=>'none','possibleColNames'=>[]]);
+        array_push($CommunityMemberFieldlist, ['dbColName'=>'custom2','rule'=>'none','possibleColNames'=>[]]);
+        array_push($CommunityMemberFieldlist, ['dbColName'=>'custom3','rule'=>'none','possibleColNames'=>[]]);
+        array_push($CommunityMemberFieldlist, ['dbColName'=>'custom4','rule'=>'none','possibleColNames'=>[]]);
+
+        //[['dbColName'->'phone','rule'=>'isPhone','possibleColNames'=['phone','cellphone']]]
+        //$membersArray[0]
+        //request()->input('header-row')
+
+        $guessedHeaders=$this->guessArrayMapToDbFields($CommunityMemberFieldlist, $membersArray[0],request()->input('header-row'));
+        return json_encode($guessedHeaders,JSON_PRETTY_PRINT);
         return view('parsemembersfile',['membersArray'=>$membersArray,'community'=>$community]);
     }
 
