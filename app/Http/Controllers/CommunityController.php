@@ -170,6 +170,9 @@ class CommunityController extends Controller
         $custom3ColIndex=array_search ('custom3' , $colsDbMaping );
         $custom4ColIndex=array_search ('custom4' , $colsDbMaping );
 
+        $fNameColIndex=array_search ('f_name' , $colsDbMaping );
+        $lNameColIndex=array_search ('l_name' , $colsDbMaping );
+
         // array_search ('email' , $colsDbMaping ) - return column index of email
         //traverse over members array. If row index is in request()->input('memberRowNum')
         //then try to find member by email (according to email column index).
@@ -181,6 +184,9 @@ class CommunityController extends Controller
                 $community_member=CommunityMember::where('email', $membersArray[$i][$emailColIndex])->first();
                 if ($community_member)//update
                 {
+                    if ($fNameColIndex!==false && $lNameColIndex!==false)
+                        $community_member->name=$membersArray[$i][$fNameColIndex]." ".$membersArray[$i][$lNameColIndex];
+
                     if ($nameColIndex!==false)
                         $community_member->name=$membersArray[$i][$nameColIndex];
                     if ($phoneColIndex!==false)
@@ -206,6 +212,8 @@ class CommunityController extends Controller
 
                     if ($emailColIndex!==false)
                         $community_member->email=$membersArray[$i][$emailColIndex];
+                    if ($fNameColIndex!==false && $lNameColIndex!==false)
+                        $community_member->name=$membersArray[$i][$fNameColIndex]." ".$membersArray[$i][$lNameColIndex];
                     if ($nameColIndex!==false)
                         $community_member->name=$membersArray[$i][$nameColIndex];
                     if ($phoneColIndex!==false)
