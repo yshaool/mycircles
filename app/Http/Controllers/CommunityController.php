@@ -44,7 +44,7 @@ class CommunityController extends Controller
 
         if (session()->has('invite_code')) {
             session()->forget('invite_code');
-            $community_member=CommunityMember::where('invite_code',  session()->has('invite_code'))->first();
+            $community_member=CommunityMember::where('invite_code',  session()->get('invite_code'))->first();
             if ($community_member)
             {
                 $community_member->user_id=$user->id;
@@ -113,11 +113,7 @@ class CommunityController extends Controller
         if ($community->user_id!=Auth::id())
             return redirect('/communities')->with('error','You do not have access to Add members to this Circle.');
 
-
         $membersArray=Excel::toArray(new CommunityMemberImport, request()->file('members-file'));
-
-
-        //json_encode($membersArray[0],JSON_PRETTY_PRINT);
 
         $CommunityMemberFieldlist=array();
         array_push($CommunityMemberFieldlist, ['dbColName'=>'name','rule'=>'none','possibleColNames'=>['name']]);
@@ -130,16 +126,106 @@ class CommunityController extends Controller
         array_push($CommunityMemberFieldlist, ['dbColName'=>'custom3','rule'=>'none','possibleColNames'=>[]]);
         array_push($CommunityMemberFieldlist, ['dbColName'=>'custom4','rule'=>'none','possibleColNames'=>[]]);
 
+
+        $guessedHeaders=$this->guessArrayMapToDbFields($CommunityMemberFieldlist, $membersArray[0],request()->input('header-row'));
+
+        $possibleColumnsNames=array('name','f_name','l_name','phone','email','custom1','custom2','custom3','custom4');
+        $request->session()->put('membersArray', $membersArray[0]);
+        $request->session()->put('hasHeaderRow', request()->input('header-row'));
+        return view('parsemembersfile',['membersArray'=>$membersArray[0],'guessedHeaders'=>$guessedHeaders, 'possibleColumnsNames'=>$possibleColumnsNames, 'withHeaderRow'=>request()->input('header-row'),'community'=>$community]);
+
+
+        // For debuging purpose
+        //json_encode($membersArray[0],JSON_PRETTY_PRINT);
         //[['dbColName'->'phone','rule'=>'isPhone','possibleColNames'=['phone','cellphone']]]
         //$membersArray[0]
         //request()->input('header-row')
-
-        $guessedHeaders=$this->guessArrayMapToDbFields($CommunityMemberFieldlist, $membersArray[0],request()->input('header-row'));
-        return json_encode($guessedHeaders,JSON_PRETTY_PRINT);
-        return view('parsemembersfile',['membersArray'=>$membersArray,'community'=>$community]);
+        //return json_encode($guessedHeaders,JSON_PRETTY_PRINT);
     }
 
+    /**
+     * Handle the insert/update of members from file by the columns names selected.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function addMemberFromFile(Request $request, $id)
+    {
+        $community= Community::find($id);
+        $user= User::find(Auth::id());
 
+        //check if user has credential to view this communty (member or owner)
+        if ($community->user_id!=Auth::id())
+            return redirect('/communities')->with('error','You do not have access to Add members to this Circle.');
+
+        $membersArray=session()->get('membersArray');
+        $hasHeaderRow=session()->get('hasHeaderRow');
+        $selectedRowToAdd=request()->input('memberRowNum');
+        $colsDbMaping=request()->input('colHeadingNames');
+
+        $emailColIndex=array_search ('email' , $colsDbMaping );
+        $nameColIndex=array_search ('name' , $colsDbMaping );
+        $phoneColIndex=array_search ('phone' , $colsDbMaping );
+        $custom1ColIndex=array_search ('custom1' , $colsDbMaping );
+        $custom2ColIndex=array_search ('custom2' , $colsDbMaping );
+        $custom3ColIndex=array_search ('custom3' , $colsDbMaping );
+        $custom4ColIndex=array_search ('custom4' , $colsDbMaping );
+
+        // array_search ('email' , $colsDbMaping ) - return column index of email
+        //traverse over members array. If row index is in request()->input('memberRowNum')
+        //then try to find member by email (according to email column index).
+        //If found - update existing member. If not create new member.
+        //array_search ('name' , $colsDbMaping ) - return index of name
+
+        for ($i=0; $i<count($membersArray);$i++){
+            if (in_array($i,$selectedRowToAdd)){
+                $community_member=CommunityMember::where('email', $membersArray[$i][$emailColIndex])->first();
+                if ($community_member)//update
+                {
+                    if ($nameColIndex!==false)
+                        $community_member->name=$membersArray[$i][$nameColIndex];
+                    if ($phoneColIndex!==false)
+                        $community_member->phone=$membersArray[$i][$phoneColIndex];
+                    if ($custom1ColIndex!==false)
+                        $community_member->custom1=$membersArray[$i][$custom1ColIndex];
+                    if ($custom2ColIndex!==false)
+                        $community_member->custom2=$membersArray[$i][$custom2ColIndex];
+                    if ($custom3ColIndex!==false)
+                        $community_member->custom3=$membersArray[$i][$custom3ColIndex];
+                    if ($custom4ColIndex!==false)
+                        $community_member->custom4=$membersArray[$i][$custom4ColIndex];
+
+                    $community_member->save();
+
+                }
+                else//insert
+                {
+                    $randomInviteCode=str_random(16).time();
+                    $community_member=new CommunityMember;
+                    $community_member->community_id=$community->id;
+                    $community_member->invite_code=$randomInviteCode;
+
+                    if ($emailColIndex!==false)
+                        $community_member->email=$membersArray[$i][$emailColIndex];
+                    if ($nameColIndex!==false)
+                        $community_member->name=$membersArray[$i][$nameColIndex];
+                    if ($phoneColIndex!==false)
+                        $community_member->phone=$membersArray[$i][$phoneColIndex];
+                    if ($custom1ColIndex!==false)
+                        $community_member->custom1=$membersArray[$i][$custom1ColIndex];
+                    if ($custom2ColIndex!==false)
+                        $community_member->custom2=$membersArray[$i][$custom2ColIndex];
+                    if ($custom3ColIndex!==false)
+                        $community_member->custom3=$membersArray[$i][$custom3ColIndex];
+                    if ($custom4ColIndex!==false)
+                        $community_member->custom4=$membersArray[$i][$custom4ColIndex];
+
+                    $community_member->save();
+                }
+            }
+        }
+
+        return redirect('/communities/'.$community->id)->with('success','Circle Updated');
+    }
 
 
     /**

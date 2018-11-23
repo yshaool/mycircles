@@ -30,7 +30,8 @@ Route::get('/joinfromemail', 'CommunityController@joinFromEmailLink');
 Route::get('/communities/{community}/downloadmembers', 'CommunityController@downloadMembers');
 
 Route::get('/communities/{community}/addmembersfromfile', 'CommunityController@showAddMembersFromFileForm');
-Route::POST('/communities/{community}/addmembersfromfile', 'CommunityController@parseMembersFileDisplayColSelection');
+Route::POST('/communities/{community}/parsemembersfromfile', 'CommunityController@parseMembersFileDisplayColSelection');
+Route::POST('/communities/{community}/addmembersfromfile', 'CommunityController@addMemberFromFile');
 
 
 

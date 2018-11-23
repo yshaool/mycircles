@@ -11,23 +11,34 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ action('CommunityController@index', ['id' => $community->id]) }}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                    <form action="{{ action('CommunityController@addMemberFromFile', ['id' => $community->id]) }}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         @if (isset($membersArray))
                         <table class="table">
                             <thead>
                                 <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
+                                <th scope="col">&nbsp;</th>
+                                @foreach ($guessedHeaders as $colGuess)
+                                <th scope="col">
+                                    <select class="form-control" id="col{{$loop->index}}" name="colHeadingNames[{{$loop->index}}]">
+                                        <option value="">Please Select:</option>
+                                    @foreach ($possibleColumnsNames as $possibleColName)
+                                        <option value="{{$possibleColName}}" {{$colGuess==$possibleColName ? "selected" : ""}}>{{$possibleColName}}</option>
+                                    @endforeach
+                                    </select>
+                                </th>
+                                @endforeach
                                 </tr>
                             </thead>
                             <tbody>
-                            @foreach ($membersArray[0] as $memberRow)
+                            @foreach ($membersArray as $memberRow)
                             <tr>
                             <div class="row">
-                                <td><div><input class="form-check-input" type="checkbox" value="" id="memberrow" name="memberrow"></div></td>
+                                <td>
+                                    @if (!$withHeaderRow || $loop->index!=0)
+                                    <div><input class="form-check-input" type="checkbox" checked value="{{$loop->index}}" id="memberRowNum[]" name="memberRowNum[]"></div>
+                                    @endif
+                                </td>
                                 @foreach ($memberRow as $memberField)
                                     <td>{{$memberField}}</td>
                                 @endforeach
@@ -37,7 +48,10 @@
                             </tbody>
                         </table>
                         @endif
+                        <a href="#" class="mr-4"><span id="checkall">Uncheck All</span></a>
                         <input type="submit" value="Add Selected Members" class="btn btn-primary" />
+                        <br><br>
+                        Existing memebers which has same email address will be updated.
                     </form>
                     <br><br>
 
