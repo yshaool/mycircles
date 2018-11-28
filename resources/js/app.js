@@ -6,7 +6,7 @@
  */
 
 require('./bootstrap');
-require('./circlejs');
+//require('./circlejs');
 //window.Vue = require('vue');
 
 /**

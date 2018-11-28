@@ -33,7 +33,10 @@ Route::get('/communities/{community}/addmembersfromfile', 'CommunityController@s
 Route::POST('/communities/{community}/parsemembersfromfile', 'CommunityController@parseMembersFileDisplayColSelection');
 Route::POST('/communities/{community}/addmembersfromfile', 'CommunityController@addMemberFromFile');
 
-
+Route::get('/users/{user}/editusername', 'UserController@editUsername');
+Route::put('/users/{user}/updateusername', 'UserController@updateUsername');
+Route::get('/users/{user}/editpassword', 'UserController@editPassword');
+Route::put('/users/{user}/updatepassword', 'UserController@updatePassword');
 
 //https://itsolutionstuff.com/post/laravel-56-import-export-to-excel-and-csv-exampleexample.html
 //laravel excel export https://www.youtube.com/watch?v=2FH72e6OjeQ

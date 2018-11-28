@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                   Edit User - {{$user->name}}
+                   Edit My Profile
                    <a href="/users/{{$user->id}}" role="button" class="btn btn-secondary btn-sm float-right">back</a>
                 </div>
                 <div class="card-body">
@@ -21,7 +21,7 @@
                                     {{$user->email}}
                                 </div>
                                 <div class="col-sm">
-                                    <a href="#">Change Email</a>
+                                    <a href="/users/{{$user->id}}/editusername">Change Email</a>
                                 </div>
                             </div>
                             <div class="row" style="max-width:450px;">
@@ -32,7 +32,7 @@
                                     **********
                                 </div>
                                 <div class="col-sm">
-                                    <a href="#">Change Password</a>
+                                    <a href="/users/{{$user->id}}/editpassword">Change Password</a>
                                 </div>
                             </div>
                         </div>

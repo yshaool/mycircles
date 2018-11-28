@@ -68,11 +68,11 @@ $( document ).ready( function () {
                 error.insertAfter( element );
             }
         },
-        highlight: function ( element, errorClass, validClass ) {
-            $( element ).parents( ".col-sm-5" ).addClass( "has-error" ).removeClass( "has-success" );
+        highlight: function(element) {
+            $(element).closest('.form-group').addClass('alert alert-danger');
         },
-        unhighlight: function (element, errorClass, validClass) {
-            $( element ).parents( ".col-sm-5" ).addClass( "has-success" ).removeClass( "has-error" );
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('alert alert-danger');
         }
     } );
 }

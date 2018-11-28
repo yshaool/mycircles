@@ -74,6 +74,44 @@ class UserController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function editUsername($id)
+    {
+        $user= User::find($id);
+        return view('username-edit')->with('user',$user);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateUsername(Request $request, $id)
+    {
+        $user= User::find($id);
+
+        //make sure user is authorised for this action
+        if ($user->id!=Auth::id())
+             redirect('/users/',Auth::id())->with('error','You do not have access to update this user.');
+
+        $this->validate($request, [
+            'email' => 'required|string|email|max:255|unique:users'
+        ]);
+
+        $user->email = $request->input('email');
+        $user->save();
+
+        return redirect('/users/'.$user->id)->with('success','Username Updated');
+    }
+
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -122,6 +160,47 @@ class UserController extends Controller
 
         return redirect('/users/'.$user->id)->with('success','User Updated');
     }
+
+/**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function editPassword($id)
+    {
+        $user= User::find($id);
+        return view('password-edit')->with('user',$user);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePassword(Request $request, $id)
+    {
+        $user= User::find($id);
+
+        //make sure user is authorised for this action
+        if ($user->id!=Auth::id())
+             redirect('/users/',Auth::id())->with('error','You do not have access to update this user.');
+
+        $this->validate($request, [
+            'password' => 'required|string|min:6|confirmed',
+            'newpassword' => 'required|string|min:6|confirmed'
+        ]);
+
+        //$user->email = $request->input('email');
+        $user->save();
+
+        return redirect('/users/'.$user->id)->with('success','Password Updated');
+    }
+
+
+
 
     /**
      * Remove the specified resource from storage.

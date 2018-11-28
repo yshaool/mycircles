@@ -690,7 +690,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(13);
-module.exports = __webpack_require__(37);
+module.exports = __webpack_require__(36);
 
 
 /***/ }),
@@ -705,7 +705,7 @@ module.exports = __webpack_require__(37);
  */
 
 __webpack_require__(14);
-__webpack_require__(36);
+//require('./circlejs');
 //window.Vue = require('vue');
 
 /**
@@ -1862,33 +1862,6 @@ module.exports = function spread(callback) {
 
 /***/ }),
 /* 36 */
-/***/ (function(module, exports) {
-
-$('body').on('click', '#deleteMember', function () {
-    if (confirm("Are you sure you want to delete this member?")) {
-        //alert($(this).attr("data-member-id"));
-        $("#deleteMemberForm").attr("action", "/communitymember/" + $(this).attr("data-member-id"));
-        $("#deleteMemberForm").submit();
-    }
-});
-
-$(document).ready(function () {
-
-    $("#checkall").click(function () {
-        event.preventDefault();
-
-        if ($("input[type='checkbox']").prop("checked")) {
-            $(':checkbox').prop('checked', false);
-            $(this).text('Check all');
-        } else {
-            $(':checkbox').prop('checked', true);
-            $(this).text('Uncheck all');
-        }
-    });
-});
-
-/***/ }),
-/* 37 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

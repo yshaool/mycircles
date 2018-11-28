@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     {{$user->name}} Profile
-                    <a href="/users/{{$user->id}}/edit" role="button" class="btn btn-secondary btn-sm float-right mr-1">Edit User</a>
+                    <a href="/users/{{$user->id}}/edit" role="button" class="btn btn-secondary btn-sm float-right mr-1">Edit My Profile</a>
                     <a href="/users/{{$user->id}}/" role="button" class="btn btn-secondary btn-sm float-right mr-1">Add Special Offers</a>
                 </div>
                 <div class="container">
