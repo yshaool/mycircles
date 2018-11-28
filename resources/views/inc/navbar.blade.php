@@ -16,9 +16,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/users/{{ Auth::user()->id }}">My profile</a>
                         </li>
-                        <li class="nav-item {{Request::is('myspecialoffers') ? 'active' : ''}}">
-                            <a class="nav-link" href="/myspecialoffers">My Special Offers</a>
-                        </li>
                      </ul>
 
                     <!-- Right Side Of Navbar -->
