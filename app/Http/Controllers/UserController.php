@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 use App\User;
 use Auth;
 use Image;
@@ -174,7 +175,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in .
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -189,11 +190,18 @@ class UserController extends Controller
              redirect('/users/',Auth::id())->with('error','You do not have access to update this user.');
 
         $this->validate($request, [
-            'password' => 'required|string|min:6|confirmed',
-            'newpassword' => 'required|string|min:6|confirmed'
+            'password' => 'required|string|min:6',
+            'newpassword' => 'required|string|min:6'
         ]);
 
-        //$user->email = $request->input('email');
+
+        $oldPassHashed=Hash::make($request->get('password'));
+
+        if (!Hash::check($request->get('password'), $user->password)){
+            return redirect('/users/'.$user->id.'/editpassword')->with('error','The original password is incorrect.');
+        }
+
+        $user->password = Hash::make($request->get('newpassword'));
         $user->save();
 
         return redirect('/users/'.$user->id)->with('success','Password Updated');
