@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Storage;
+use App\User;
+use Auth;
+use Image;
 class UserController extends Controller
 {
     /**
@@ -54,7 +57,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user= User::find($id);
+        return view('user')->with('user',$user);
     }
 
     /**
@@ -65,7 +69,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user= User::find($id);
+        return view('user-edit')->with('user',$user);
     }
 
     /**
@@ -77,7 +82,45 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user= User::find($id);
+
+
+        //make sure user is authorised for this community
+        if ($user->id!=Auth::id())
+             redirect('/users/',Auth::id())->with('error','You do not have access to update this user.');
+
+
+        $this->validate($request, [
+            'name' => 'required|string|max:255'
+        ]);
+
+
+        if ($request->file('image'))
+        {
+            $username=strtolower($request->input('name'));
+            $username = str_replace(" ", "-", $username);
+            $username = preg_replace('/[^a-zA-Z0-9-_\.]/','', $username);
+
+            $filenameToStore = $username.'-'.time().'.jpg';
+
+            $path   = $request->file('image');
+
+            $img = Image::make($path)->fit(300)->encode('jpg');
+            Storage::put('public/users/'.$filenameToStore, $img->__toString());
+            if ($user->image!="")
+                Storage::delete('public/users/'.$user->image);
+            $user->image=$filenameToStore;
+        }
+
+        $user->name = $request->input('name');
+        $user->phone = $request->input('phone');
+        $user->address = $request->input('address');
+        $user->profession = $request->input('profession');
+        $user->services = $request->input('services');
+
+        $user->save();
+
+        return redirect('/users/'.$user->id)->with('success','User Updated');
     }
 
     /**
