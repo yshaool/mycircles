@@ -6,41 +6,25 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    {{$community->name}}
-
-                    @if ($community->user_id==Auth::id())
-                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                            <a class="navbar-brand" href="#"></a>
-                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                              <span class="navbar-toggler-icon"></span>
-                            </button>
-
-                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                              <ul class="navbar-nav mr-auto">
-                                <li class="nav-item">
-                                    <a href="/communities/{{$community->id}}/edit" role="button" class="nav-link float-right mr-1">Edit Circle</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/communities/{{$community->id}}/showinvite" role="button" class="nav-link float-right mr-1">Invite members</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/communities/{{$community->id}}/downloadmembers" role="button" class="nav-item nav-link float-right mr-1">Download members</a>
-                                </li>
-
-
-                                <li class="nav-item dropdown">
-                                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="d-flex flex-wrap">
+                        <div class="p-2">{{$community->name}}</div>
+                        @if ($community->user_id==Auth::id())
+                            <div class="p-2">
+                                <div class="dropdown float-right">
+                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Add Members
-                                  </a>
-                                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/communitymember/create?cmid={{$community->id}}">Using Form</a>
-                                    <a class="dropdown-item" href="/communities/{{$community->id}}/addmembersfromfile">From a File</a>
-                                  </div>
-                                </li>
-                              </ul>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="/communitymember/create?cmid={{$community->id}}">Using Form</a>
+                                        <a class="dropdown-item" href="/communities/{{$community->id}}/addmembersfromfile">From a File</a>
+                                    </div>
+                                </div>
                             </div>
-                    </nav>
-                    @endif
+                            <div class="p-2"><a href="/communities/{{$community->id}}/edit" role="button" class="btn btn-secondary btn-sm float-right mr-1">Edit Circle</a></div>
+                            <div class="p-2"><a href="/communities/{{$community->id}}/showinvite" role="button" class="btn btn-secondary btn-sm float-right mr-1">Invite members</a></div>
+                            <div class="p-2"><a href="/communities/{{$community->id}}/downloadmembers" role="button" class="btn btn-secondary btn-sm float-right mr-1">Download members</a></div>
+                        @endif
+                    </div>
                 </div>
                 @mobile
                     <div class="card-body p-0">
