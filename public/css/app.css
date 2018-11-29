@@ -10476,3 +10476,9 @@ a.text-dark:focus {
   fill: red;
 }
 
+.mobileMembersEmailPhone {
+  fill: blue;
+  width: 52px;
+  height: 52px;
+}
+

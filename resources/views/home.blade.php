@@ -16,16 +16,22 @@
                         <div class="row mb-4">
                         @if (isset($user->communities))
                         @foreach ($user->communities as $community)
-                            @if ($loop->index!=0 && $loop->index % 3 ==0)
-                            </div><div class="row mb-4">
-                            @endif
+                            @notmobile
+                                @if ($loop->index!=0 && $loop->index % 3 ==0)
+                                </div><div class="row mb-4">
+                                @endif
+                            @elsenotmobile
+                                </div><div class="row mb-4">
+                            @endnotmobile
                             <div class="col text-center">
-                                <a href="/communities/{{$community->id}}"><img src="{{ asset('storage/circles/'.$community->image) }}" alt="{{$community->name}}" width="300px;"></a>
+                                <a href="/communities/{{$community->id}}"><img src="{{ asset('storage/circles/'.$community->image) }}" alt="{{$community->name}}" style="width:300px;max-width:90%;"></a>
                                 <br>
                                 <a href="/communities/{{$community->id}}">{{$community->name}}</a>
                             </div>
                         @endforeach
                         @endif
+
+
                         </div>
                     </div>
 

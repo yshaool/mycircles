@@ -7,27 +7,51 @@
             <div class="card">
                 <div class="card-header">
                     {{$community->name}}
+
                     @if ($community->user_id==Auth::id())
-                    <div class="dropdown float-right">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                         Add Members
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" href="/communitymember/create?cmid={{$community->id}}">Using Form</a>
-                          <a class="dropdown-item" href="/communities/{{$community->id}}/addmembersfromfile">From a File</a>
-                        </div>
-                    </div>
-                    <a href="/communities/{{$community->id}}/edit" role="button" class="btn btn-secondary btn-sm float-right mr-1">Edit Circle</a>
-                    <a href="/communities/{{$community->id}}/showinvite" role="button" class="btn btn-secondary btn-sm float-right mr-1">Invite members</a>
-                    <a href="/communities/{{$community->id}}/downloadmembers" role="button" class="btn btn-secondary btn-sm float-right mr-1">Download members</a>
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                            <a class="navbar-brand" href="#"></a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                              <span class="navbar-toggler-icon"></span>
+                            </button>
+
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                              <ul class="navbar-nav mr-auto">
+                                <li class="nav-item">
+                                    <a href="/communities/{{$community->id}}/edit" role="button" class="nav-link float-right mr-1">Edit Circle</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/communities/{{$community->id}}/showinvite" role="button" class="nav-link float-right mr-1">Invite members</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/communities/{{$community->id}}/downloadmembers" role="button" class="nav-item nav-link float-right mr-1">Download members</a>
+                                </li>
+
+
+                                <li class="nav-item dropdown">
+                                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Add Members
+                                  </a>
+                                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/communitymember/create?cmid={{$community->id}}">Using Form</a>
+                                    <a class="dropdown-item" href="/communities/{{$community->id}}/addmembersfromfile">From a File</a>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                    </nav>
                     @endif
                 </div>
-                <div class="card-body">
-                    <div class="container">
+                @mobile
+                    <div class="card-body p-0">
+                @elsemobile
+                    <div class="card-body p-3">
+                @endmobile
+                    <div class="container mt-3">
                         <div class="row">
                             @if ($community->image!="")
                             <div class="col-sm">
-                                    <img src="{{ asset('storage/circles/'.$community->image) }}" alt="{{$community->name}}">
+                                    <img src="{{ asset('storage/circles/'.$community->image) }}" alt="{{$community->name}}" style="max-width:90%;">
                             </div>
                             @endif
                             <div class="col-sm">
@@ -37,15 +61,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="container mt-4">
-                        <h3>Members:</h3>
+                    <div class="container mt-4 p-0">
+                        <h3 class="ml-1">Members:</h3>
                         <table class="table table-striped">
                             <thead>
                                 <tr>
                                 <th scope="col">Name</th>
-                                <th scope="col">email</th>
-                                <th scope="col">Phone</th>
+                                @notmobile
+                                    <th scope="col">email</th>
+                                    <th scope="col">Phone</th>
+                                @elsenotmobile
+                                    <th scope="col" class="text-center"><span class="font-size: 1.4em; color: #4d4d4d;"><i class="fas fa-mail-bulk"></i></span></th>
+                                    <th scope="col" class="text-center"><span class="font-size: 1.4em; color: #4d4d4d;"><i class="fas fa-phone"></i></span></th>
+                                @endnotmobile
+
                                 @if ($community->user_id==Auth::id())
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
                                     <th scope="col"></th>
                                 @endif
                                 </tr>
@@ -53,19 +85,19 @@
                                 <tbody>
                                 @foreach ($community->communityMembers as $member)
                                     <tr>
-                                        <td>{{$member->name}}</td>
-                                        <td>{{$member->email}}</td>
-                                        <td>{{$member->phone}}</td>
+                                        <td nowrap>{{$member->name}}</td>
+                                        @notmobile
+                                            <th scope="col"><a href="mailto:{{$member->email}}" target="_blank">{{$member->email}}</a></th>
+                                            <th scope="col">{{$member->phone}}</th>
+                                        @elsenotmobile
+                                            <th scope="col" class="text-center"><a href="mailto:{{$member->email}}" style="font-size: 1.3em; color: blue;" target="_blank"><i class="fas fa-envelope"></i></a></th>
+                                            <th scope="col" class="text-center"><a href="#" style="font-size: 1.3em; color: blue;"><i class="fas fa-phone-square"></i></a></th>
+                                        @endnotmobile
+
                                         @if ($community->user_id==Auth::id())
-                                            <td>
-                                                <div class="row">
-                                                    <div class="col-sm">
-                                                        <a href="/communitymember/{{$member->id}}/edit?cmid={{$community->id}}"><img src="/svg/si-glyph-edit.svg" alt="Edit" title="Edit" /></a>                                                        </div>
-                                                    <div class="col-sm">
-                                                            <a href="#" ><img src="/svg/si-glyph-button-remove.svg" id="deleteMember" alt="Delete" title="Delete" data-member-id="{{$member->id}}" /></a>
-                                                    </div>
-                                                </div>
-                                            </td>
+                                            <td>|</td>
+                                            <td><a href="/communitymember/{{$member->id}}/edit?cmid={{$community->id}}" style="font-size: 1.3em; color: #800080;"><i class="fas fa-user-edit"></i></a></td>
+                                            <td><a href="#" style="font-size: 1.3em; color: red;"><i data-member-id="{{$member->id}}"id="deleteMember" alt="Delete" title="Delete" class="fas fa-minus-circle"></i><a></td>
                                         @endif
                                     </tr>
                                 @endforeach

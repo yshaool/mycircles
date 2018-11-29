@@ -7,6 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     Joine Circle with Invitation Code
+                    <a href="/communities" role="button" class="btn btn-secondary btn-sm float-right">back</a>
                 </div>
 
                 <div class="card-body">
