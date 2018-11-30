@@ -6,30 +6,43 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="d-flex flex-wrap">
-                        <div class="p-2">{{$community->name}}</div>
                         @if ($community->user_id==Auth::id())
-                            <div class="p-2">
-                                <div class="dropdown float-right">
-                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Add Members
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="/communitymember/create?cmid={{$community->id}}">Using Form</a>
-                                        <a class="dropdown-item" href="/communities/{{$community->id}}/addmembersfromfile">From a File</a>
-                                    </div>
-                                </div>
+                        @mobile
+                        <div class="btn-group float-left">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    &#x22EF;
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="/communities/{{$community->id}}/edit">Edit Circle</a>
+                                <a class="dropdown-item" href="/communities/{{$community->id}}/showinvite">Invite members</a>
+                                <a class="dropdown-item" href="/communities/{{$community->id}}/downloadmembers">Download members</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/communitymember/create?cmid={{$community->id}}">Add Member Form</a>
+                                <a class="dropdown-item" href="/communities/{{$community->id}}/addmembersfromfile">Add Member From File</a>
                             </div>
-                            <div class="p-2"><a href="/communities/{{$community->id}}/edit" role="button" class="btn btn-secondary btn-sm float-right mr-1">Edit Circle</a></div>
-                            <div class="p-2"><a href="/communities/{{$community->id}}/showinvite" role="button" class="btn btn-secondary btn-sm float-right mr-1">Invite members</a></div>
-                            <div class="p-2"><a href="/communities/{{$community->id}}/downloadmembers" role="button" class="btn btn-secondary btn-sm float-right mr-1">Download members</a></div>
+                        </div>
+                        <div class="float-right">{{$community->name}}</div>
+                        @elsemobile
+                        {{$community->name}}
+                        <div class="dropdown float-right">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Add Members
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="/communitymember/create?cmid={{$community->id}}">Using Form</a>
+                                    <a class="dropdown-item" href="/communities/{{$community->id}}/addmembersfromfile">From a File</a>
+                                </div>
+                        </div>
+                        <a href="/communities/{{$community->id}}/edit" role="button" class="btn btn-secondary btn-sm float-right mr-1">Edit Circle</a>
+                        <a href="/communities/{{$community->id}}/showinvite" role="button" class="btn btn-secondary btn-sm float-right mr-1">Invite members</a>
+                        <a href="/communities/{{$community->id}}/downloadmembers" role="button" class="btn btn-secondary btn-sm float-right mr-1">Download members</a>
+                        @endmobile
                         @endif
-                    </div>
                 </div>
                 @mobile
-                    <div class="card-body p-0">
+                <div class="card-body p-0">
                 @elsemobile
-                    <div class="card-body p-3">
+                <div class="card-body p-3">
                 @endmobile
                     <div class="container mt-3">
                         <div class="row">
@@ -69,13 +82,19 @@
                                 <tbody>
                                 @foreach ($community->communityMembers as $member)
                                     <tr>
-                                        <td nowrap>{{$member->name}}</td>
+                                        <td>
+                                            @if ($member->user_id!=0)
+                                            <a href="/users/{{$member->user_id}}">{{$member->name}}</a>
+                                            @else
+                                            {{$member->name}}
+                                            @endif
+                                            </td>
                                         @notmobile
                                             <th scope="col"><a href="mailto:{{$member->email}}" target="_blank">{{$member->email}}</a></th>
                                             <th scope="col">{{$member->phone}}</th>
                                         @elsenotmobile
                                             <th scope="col" class="text-center"><a href="mailto:{{$member->email}}" style="font-size: 1.3em; color: blue;" target="_blank"><i class="fas fa-envelope"></i></a></th>
-                                            <th scope="col" class="text-center"><a href="#" style="font-size: 1.3em; color: blue;"><i class="fas fa-phone-square"></i></a></th>
+                                            <th scope="col" class="text-center"><a href="tel:{{$member->phone}}" style="font-size: 1.3em; color: blue;"><i class="fas fa-phone-square"></i></a></th>
                                         @endnotmobile
 
                                         @if ($community->user_id==Auth::id())
@@ -94,6 +113,7 @@
                         </form>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

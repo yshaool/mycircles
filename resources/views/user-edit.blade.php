@@ -69,7 +69,7 @@
                             @if ($user->image!="")
                             <div><b>Current Image</b> (to keep it leave image field empty)</div>
                             <br>
-                            <img src="{{ asset('storage/users/'.$user->image) }}"  alt="{{$user->name}}" class="rounded">
+                            <img src="{{ asset('storage/users/'.$user->image) }}"  alt="{{$user->name}}" class="rounded" style="max-width:90%;">
                             @endif
                     </div>
                 </div>

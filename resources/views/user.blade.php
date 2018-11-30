@@ -7,15 +7,19 @@
             <div class="card">
                 <div class="card-header">
                     {{$user->name}} Profile
+                    @if ($user->id==Auth::id())
                     <a href="/users/{{$user->id}}/edit" role="button" class="btn btn-secondary btn-sm float-right mr-1">Edit My Profile</a>
                     <!--<a href="/users/{{$user->id}}/" role="button" class="btn btn-secondary btn-sm float-right mr-1">Add Special Offers</a>-->
+                    @else
+                    <a href="javascript:window.history.back();" role="button" class="btn btn-secondary btn-sm float-right mr-1">Back</a>
+                    @endif
                 </div>
                 <div class="container">
                     <div class="row">
                       <div class="col-md-6 img text-center">
                         <br>
                         @if ($user->image!="")
-                        <img src="{{ asset('storage/users/'.$user->image) }}"  alt="{{$user->name}}" class="rounded">
+                        <img src="{{ asset('storage/users/'.$user->image) }}"  alt="{{$user->name}}" class="rounded" style="max-width:90%;">
                         @else
                         <img src="{{ asset('storage/images/no_avatar.jpg') }}"   alt="{{$user->name}}" class="rounded">
                         @endif

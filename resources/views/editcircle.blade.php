@@ -31,7 +31,7 @@
                     <div class="container">
                         <div><b>Current Image</b> (to keep it leave image field empty)</div>
                         <br>
-                        <img src="{{ asset('storage/circles/'.$community->image) }}" alt="{{$community->name}}">
+                        <img src="{{ asset('storage/circles/'.$community->image) }}" alt="{{$community->name}}" style="max-width:90%;">
                     </div>
                 </div>
             </div>
