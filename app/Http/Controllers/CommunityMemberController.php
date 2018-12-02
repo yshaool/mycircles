@@ -138,6 +138,10 @@ class CommunityMemberController extends Controller
         {
             return redirect('/communities');
         }
+        if ($community->user_id==$communityMember->user_id)
+        {
+            return redirect('/communities/'.$request->input('cmid'))->with('error','You are the manager of this Circle. You cannot be deleted.');
+        }
         $communityMember->delete();
         return redirect('/communities/'.$request->input('cmid'))->with('success','Member deleted successfully!');
     }
