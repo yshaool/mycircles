@@ -28,6 +28,7 @@ Route::get('/communities/{community}/showinvite', 'CommunityController@showInvit
 Route::POST('/communities/{community}/sendinvite', 'CommunityController@inviteMembers');
 Route::get('/joinfromemail', 'CommunityController@joinFromEmailLink');
 Route::get('/communities/{community}/downloadmembers', 'CommunityController@downloadMembers');
+Route::get('/communities/{community}/verifydelete', 'CommunityController@showVerifyDelete');
 
 Route::get('/communities/{community}/addmembersfromfile', 'CommunityController@showAddMembersFromFileForm');
 Route::POST('/communities/{community}/parsemembersfromfile', 'CommunityController@parseMembersFileDisplayColSelection');

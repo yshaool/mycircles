@@ -17,8 +17,8 @@ class CreateCommunitiesTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->string('name');
-            $table->mediumText('description');
-            $table->string('image');
+            $table->mediumText('description')->default("");
+            $table->string('image')->default("");
             $table->timestamps();
         });
     }

@@ -474,6 +474,22 @@ class CommunityController extends Controller
         return redirect('/communities/'.$community->id)->with('success','Circle Updated');
     }
 
+    /**
+     * Show verify delete view.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showVerifyDelete($id)
+    {
+        $community= Community::find($id);
+
+        //make sure user is authorised for this community
+        if ($community->user_id!=Auth::id())
+             redirect('/communities')->with('error','You do not have access to Delete this Circle.');
+
+        return view('circle-verify-delete')->with('community',$community);
+    }
 
 
     /**
@@ -484,7 +500,20 @@ class CommunityController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $community= Community::find($id);
+
+        //make sure user is authorised for this community
+        if ($community->user_id!=Auth::id())
+             redirect('/communities')->with('error','You do not have access to Delete this Circle.');
+
+
+        Storage::delete('public/circles/'.$community->image);
+        foreach ($community->communityMembers as $member){
+            $member->delete();
+        }
+        $community->delete();
+        return redirect('/communities')->with('success','Circle Deleted successfully!');
+
     }
 
     public function showInvite($id)

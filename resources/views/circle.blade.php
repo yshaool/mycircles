@@ -14,6 +14,7 @@
                             </button>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="/communities/{{$community->id}}/edit">Edit Circle</a>
+                                <a class="dropdown-item" href="/communities/{{$community->id}}/verifydelete">Delete Circle</a>
                                 <a class="dropdown-item" href="/communities/{{$community->id}}/showinvite">Invite members</a>
                                 <a class="dropdown-item" href="/communities/{{$community->id}}/downloadmembers">Download members</a>
                                 <div class="dropdown-divider"></div>
@@ -24,18 +25,20 @@
                         <div class="float-right">{{$community->name}}</div>
                         @elsemobile
                         {{$community->name}}
-                        <div class="dropdown float-right">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Add Members
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="/communitymember/create?cmid={{$community->id}}">Using Form</a>
-                                    <a class="dropdown-item" href="/communities/{{$community->id}}/addmembersfromfile">From a File</a>
-                                </div>
+                        <div class="btn-group float-right">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Manage Community
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="/communities/{{$community->id}}/edit">Edit Circle</a>
+                                <a class="dropdown-item" href="/communities/{{$community->id}}/verifydelete">Delete Circle</a>
+                                <a class="dropdown-item" href="/communities/{{$community->id}}/showinvite">Invite members</a>
+                                <a class="dropdown-item" href="/communities/{{$community->id}}/downloadmembers">Download members</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/communitymember/create?cmid={{$community->id}}">Add Member Form</a>
+                                <a class="dropdown-item" href="/communities/{{$community->id}}/addmembersfromfile">Add Member From File</a>
+                            </div>
                         </div>
-                        <a href="/communities/{{$community->id}}/edit" role="button" class="btn btn-secondary btn-sm float-right mr-1">Edit Circle</a>
-                        <a href="/communities/{{$community->id}}/showinvite" role="button" class="btn btn-secondary btn-sm float-right mr-1">Invite members</a>
-                        <a href="/communities/{{$community->id}}/downloadmembers" role="button" class="btn btn-secondary btn-sm float-right mr-1">Download members</a>
                         @endmobile
                         @endif
                 </div>
