@@ -355,7 +355,7 @@ class CommunityController extends Controller
     {
         $this->validate($request, [
         'name' => 'required',
-        'image' => 'image|max:1999'
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120'
         ]);
 
 
@@ -368,7 +368,10 @@ class CommunityController extends Controller
 
         $path   = $request->file('image');
         // returns Intervention\Image\Image
-        $img = Image::make($path)->fit(400)->encode('jpg');
+        $img = Image::make($path)->encode('jpg');
+        $img->resize(400, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
         Storage::put('public/circles/'.$filenameToStore, $img->__toString());
 
 

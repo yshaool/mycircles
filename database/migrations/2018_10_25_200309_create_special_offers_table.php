@@ -17,9 +17,9 @@ class CreateSpecialOffersTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('community_id');//what community the offer is for. 0 means to all user communities
-            $table->string('title')->default("");
-            $table->mediumText('description')->default("");
-            $table->string('image')->default("");
+            $table->string('title')->nullable();
+            $table->mediumText('description')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
