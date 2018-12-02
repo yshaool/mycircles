@@ -11,6 +11,7 @@
                 </div>
 
                 <div class="card-body">
+                    Use this form to join a circle using Invitation code you received by email.<br><br>
                     <form action="{{ action('CommunityController@join') }}" method="post" accept-charset="utf-8">
                         {{ csrf_field() }}
                         <div class="form-group">

@@ -77,6 +77,55 @@ class CommunityController extends Controller
         return (new CommunityMemberExport($id))->download('CommunityMembers.xlsx');
     }
 
+
+    /**
+     * showTransferOwnership
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showTransferOwnership($id)
+    {
+        $community= Community::find($id);
+        $user= User::find(Auth::id());
+
+        //check if user has credential to view this communty (member or owner)
+        if ($community->user_id!=Auth::id())
+            return redirect('/communities')->with('error','You do not have access to manage this Circle.');
+
+        //return Excel::download(new CommunityMemberExport, 'CommunityMembers.xlsx');
+        return view('circle-transfer-ownership')->with('community',$community);
+    }
+
+    /**
+     * sendTransferOwnershipEmail
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function sendTransferOwnershipEmail(Request $request,$id)
+    {
+        $community= Community::find($id);
+        $user= User::find(Auth::id());
+
+        //check if user has credential to view this communty (member or owner)
+        if ($community->user_id!=Auth::id())
+            return redirect('/communities')->with('error','You do not have access to manage this Circle.');
+
+        if (!request()->input('memebertoinviteowner'))
+            return redirect('/communities/'.$id.'/transferownership')->with('error','Please Select a member.');
+
+        $communityMember= CommunityMember::find(request()->input('memebertoinviteowner'));
+
+
+        //return "hello".request()->input('memebertoinviteowner');
+
+
+        return redirect('/communities/'.$community->id)->with('success','An email with invitation to take ownership was sent to ');
+    }
+
+
+
+
+
     /**
      * Show the form for members from file.
      *
@@ -126,13 +175,18 @@ class CommunityController extends Controller
         array_push($CommunityMemberFieldlist, ['dbColName'=>'custom3','rule'=>'none','possibleColNames'=>[]]);
         array_push($CommunityMemberFieldlist, ['dbColName'=>'custom4','rule'=>'none','possibleColNames'=>[]]);
 
+        $membersArray=$membersArray[0];//set to worksheet 0
+        //remove empty rows from start
+        while ($membersArray[0][0]=="" && $membersArray[0][1]=="" && $membersArray[0][2]==""){
+                $emptyRow=array_shift($membersArray);
+        }
 
-        $guessedHeaders=$this->guessArrayMapToDbFields($CommunityMemberFieldlist, $membersArray[0],request()->input('header-row'));
+        $guessedHeaders=$this->guessArrayMapToDbFields($CommunityMemberFieldlist, $membersArray,request()->input('header-row'));
 
         $possibleColumnsNames=array('name','f_name','l_name','phone','email','custom1','custom2','custom3','custom4');
-        $request->session()->put('membersArray', $membersArray[0]);
+        $request->session()->put('membersArray', $membersArray);
         $request->session()->put('hasHeaderRow', request()->input('header-row'));
-        return view('parsemembersfile',['membersArray'=>$membersArray[0],'guessedHeaders'=>$guessedHeaders, 'possibleColumnsNames'=>$possibleColumnsNames, 'withHeaderRow'=>request()->input('header-row'),'community'=>$community]);
+        return view('parsemembersfile',['membersArray'=>$membersArray,'guessedHeaders'=>$guessedHeaders, 'possibleColumnsNames'=>$possibleColumnsNames, 'withHeaderRow'=>request()->input('header-row'),'community'=>$community]);
 
 
         // For debuging purpose
@@ -173,6 +227,10 @@ class CommunityController extends Controller
         $fNameColIndex=array_search ('f_name' , $colsDbMaping );
         $lNameColIndex=array_search ('l_name' , $colsDbMaping );
 
+        if (!$emailColIndex || (!$nameColIndex && !$lNameColIndex && $fNameColIndex))
+        {
+            return redirect('/communities/'.$id.'/addmembersfromfile')->with('error','You must select Name Column and Email column.');
+        }
         // array_search ('email' , $colsDbMaping ) - return column index of email
         //traverse over members array. If row index is in request()->input('memberRowNum')
         //then try to find member by email (according to email column index).
@@ -200,7 +258,8 @@ class CommunityController extends Controller
                     if ($custom4ColIndex!==false)
                         $community_member->custom4=$membersArray[$i][$custom4ColIndex];
 
-                    $community_member->save();
+                    if ($community_member->name!="" && $community_member->email!="")
+                        $community_member->save();
 
                 }
                 else//insert
@@ -227,7 +286,8 @@ class CommunityController extends Controller
                     if ($custom4ColIndex!==false)
                         $community_member->custom4=$membersArray[$i][$custom4ColIndex];
 
-                    $community_member->save();
+                    if ($community_member->name!="" && $community_member->email!="")
+                        $community_member->save();
                 }
             }
         }

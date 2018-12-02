@@ -6,40 +6,32 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
+                        {{$community->name}}
+
                         @if ($community->user_id==Auth::id())
                         @mobile
-                        <div class="btn-group float-left">
-                            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    &#x22EF;
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="/communities/{{$community->id}}/edit">Edit Circle</a>
-                                <a class="dropdown-item" href="/communities/{{$community->id}}/verifydelete">Delete Circle</a>
-                                <a class="dropdown-item" href="/communities/{{$community->id}}/showinvite">Invite members</a>
-                                <a class="dropdown-item" href="/communities/{{$community->id}}/downloadmembers">Download members</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/communitymember/create?cmid={{$community->id}}">Add Member Form</a>
-                                <a class="dropdown-item" href="/communities/{{$community->id}}/addmembersfromfile">Add Member From File</a>
-                            </div>
-                        </div>
-                        <div class="float-right">{{$community->name}}</div>
+                        <div class="btn-group float-right dropleft">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#x22EF;</a>
                         @elsemobile
-                        {{$community->name}}
                         <div class="btn-group float-right">
                             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Manage Community
                             </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="/communities/{{$community->id}}/edit">Edit Circle</a>
-                                <a class="dropdown-item" href="/communities/{{$community->id}}/verifydelete">Delete Circle</a>
-                                <a class="dropdown-item" href="/communities/{{$community->id}}/showinvite">Invite members</a>
-                                <a class="dropdown-item" href="/communities/{{$community->id}}/downloadmembers">Download members</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/communitymember/create?cmid={{$community->id}}">Add Member Form</a>
-                                <a class="dropdown-item" href="/communities/{{$community->id}}/addmembersfromfile">Add Member From File</a>
-                            </div>
-                        </div>
                         @endmobile
+
+                            <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/communities/{{$community->id}}/edit">Edit Circle</a>
+                                    <a class="dropdown-item" href="/communities/{{$community->id}}/verifydelete">Delete Circle</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/communitymember/create?cmid={{$community->id}}">Add Member Form</a>
+                                    <a class="dropdown-item" href="/communities/{{$community->id}}/addmembersfromfile">Add Members From File</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/communities/{{$community->id}}/showinvite">Invite members</a>
+                                    <a class="dropdown-item" href="/communities/{{$community->id}}/downloadmembers">Download members</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/communities/{{$community->id}}/transferownership">Transfer Ownership</a>
+                                </div>
+                        </div>
                         @endif
                 </div>
                 @mobile

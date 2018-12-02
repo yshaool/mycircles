@@ -29,6 +29,9 @@ Route::POST('/communities/{community}/sendinvite', 'CommunityController@inviteMe
 Route::get('/joinfromemail', 'CommunityController@joinFromEmailLink');
 Route::get('/communities/{community}/downloadmembers', 'CommunityController@downloadMembers');
 Route::get('/communities/{community}/verifydelete', 'CommunityController@showVerifyDelete');
+Route::get('/communities/{community}/transferownership', 'CommunityController@showTransferOwnership');
+Route::POST('/communities/{community}/transferownership', 'CommunityController@sendTransferOwnershipEmail');
+
 
 Route::get('/communities/{community}/addmembersfromfile', 'CommunityController@showAddMembersFromFileForm');
 Route::POST('/communities/{community}/parsemembersfromfile', 'CommunityController@parseMembersFileDisplayColSelection');
